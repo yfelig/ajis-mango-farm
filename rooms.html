@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Cottage — Aji's Mango Farm</title>
+  <meta name="description" content="Four private lakeside cottages on a mango farm in Sri Lanka. Raw concrete, open-sky bathroom, queen bed, lake view veranda." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── ROOMS PAGE ONLY ── */
+    .rooms-hero {
+      padding: 140px var(--side) 56px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .rooms-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1.05;
+    }
+    .rooms-hero .back-link {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+    .rooms-hero .back-link:hover { color: var(--text); }
+
+    /* SLIDER */
+    .slider-wrap {
+      position: relative;
+      width: 100%;
+      height: 78vh;
+      min-height: 420px;
+      overflow: hidden;
+      background: #111;
+    }
+    .slides {
+      display: flex;
+      height: 100%;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .slide {
+      flex: 0 0 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(250,248,244,0.92);
+      border: none;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slider-btn:hover { background: #fff; }
+    .slider-btn--prev { left: 24px; }
+    .slider-btn--next { right: 24px; }
+    .slider-btn svg { width: 20px; height: 20px; }
+
+    .slider-counter {
+      position: absolute;
+      bottom: 20px;
+      right: 28px;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      z-index: 10;
+    }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 24px 0 0;
+    }
+    .slider-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      border: 1px solid var(--muted);
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .slider-dot.active { background: var(--text); border-color: var(--text); }
+
+    /* ROOM SPECS */
+    .room-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-top: 72px;
+    }
+    .specs-text {
+      padding: 0 var(--side) var(--gap);
+      border-right: 1px solid var(--border);
+    }
+    .specs-text p + p { margin-top: 16px; }
+
+    .specs-list {
+      padding: 0 var(--side) var(--gap);
+    }
+    .specs-list h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 24px;
+    }
+    .specs-list ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .specs-list li {
+      font-size: 0.92rem;
+      color: var(--muted);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .specs-list li span:first-child {
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* HONEST NOTE */
+    .honest-strip {
+      background: var(--bg-alt);
+      padding: 40px var(--side);
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .honest-strip .icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .honest-strip p {
+      font-size: 0.9rem;
+      font-style: italic;
+      max-width: 72ch;
+    }
+
+    /* BOOK STRIP */
+    .room-book {
+      padding: var(--gap) var(--side);
+      text-align: center;
+      background: var(--bg-dark);
+    }
+    .room-book h2 { color: #fff; margin-bottom: 16px; }
+    .room-book p { color: rgba(255,255,255,0.6); margin: 0 auto 40px; }
+    .room-book .btn-wa {
+      font-size: 1rem;
+      padding: 18px 48px;
+    }
+
+    @media (max-width: 860px) {
+      .rooms-hero { flex-direction: column; align-items: flex-start; padding-top: 100px; }
+      .room-specs { grid-template-columns: 1fr; }
+      .specs-text { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 40px; margin-bottom: 0; }
+      .slider-btn { width: 40px; height: 40px; }
+      .slider-btn--prev { left: 12px; }
+      .slider-btn--next { right: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav scrolled">
+    <a href="index.html" class="nav-logo">Aji's Mango Farm</a>
+    <nav class="nav-links">
+      <a href="index.html#welcome">The Farm</a>
+      <a href="index.html#aji">Aji</a>
+      <a href="index.html#explore">Explore</a>
+      <a href="index.html#contact">Find Us</a>
+    </nav>
+    <a class="nav-wa" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
+      Book Direct
+    </a>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <div class="rooms-hero">
+    <div>
+      <span class="label">THE COTTAGE</span>
+      <h1>Your Private<br>Room</h1>
+    </div>
+    <a href="index.html" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M19 12H5M5 12l7-7M5 12l7 7"/></svg>
+      Back to the Farm
+    </a>
+  </div>
+
+  <!-- PHOTO SLIDER -->
+  <div class="slider-wrap">
+    <div class="slides" id="slides">
+      <div class="slide"><img src="photos/room-doorway.jpg" alt="Cottage entrance — bed and lake beyond" /></div>
+      <div class="slide"><img src="photos/cottage-exterior.jpg" alt="Cottage exterior among the trees" /></div>
+      <div class="slide"><img src="photos/room-full.jpg" alt="The bedroom" /></div>
+      <div class="slide"><img src="photos/room-bed.jpg" alt="Queen bed with handmade headboard" /></div>
+      <div class="slide"><img src="photos/cottage-interior.jpg" alt="Sitting area — velvet armchairs" /></div>
+      <div class="slide"><img src="photos/room-view.jpg" alt="View from inside — lake through the open doors" /></div>
+      <div class="slide"><img src="photos/bathroom.jpg" alt="Open-air bathroom with tree" /></div>
+      <div class="slide"><img src="photos/room-bathroom-sky.jpg" alt="Looking up through the open bathroom at the palms" /></div>
+      <div class="slide"><img src="photos/room-vanity.jpg" alt="Bathroom vanity — white vessel sink, black tap" /></div>
+    </div>
+
+    <button class="slider-btn slider-btn--prev" id="prev" aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="slider-btn slider-btn--next" id="next" aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+
+    <div class="slider-counter" id="counter">1 / 9</div>
+  </div>
+
+  <div class="slider-dots" id="sliderDots"></div>
+
+  <!-- SPECS -->
+  <div class="room-specs">
+    <div class="specs-text">
+      <span class="label">THE SPACE</span>
+      <h2>Built for Two</h2>
+      <p>Each of the four cottages is completely separate — its own entrance, its own veranda, its own view of the lake. No shared walls, no shared paths.</p>
+      <p>The design is raw and considered: polished concrete floors, a handmade teak bed, velvet armchairs, sliding glass doors that open the room to the outside. The bathroom is open to the sky — you shower under the trees, looking up at the palms.</p>
+      <p>It's not a luxury hotel. But it's beautiful, well-made, and genuinely private.</p>
+    </div>
+    <div class="specs-list">
+      <h3>What's Included</h3>
+      <ul>
+        <li><span>🛏</span><span>Queen bed — teak frame, fresh linens and towels daily</span></li>
+        <li><span>🌿</span><span>Open-air bathroom — shower under the sky, white vessel sink</span></li>
+        <li><span>🏡</span><span>Private veranda with lake view and lounge seating</span></li>
+        <li><span>❄️</span><span>Air conditioning</span></li>
+        <li><span>📶</span><span>WiFi</span></li>
+        <li><span>🧊</span><span>Mini fridge</span></li>
+        <li><span>☕</span><span>Kettle, tea and coffee</span></li>
+        <li><span>🍳</span><span>Breakfast included every morning</span></li>
+        <li><span>🥭</span><span>Fresh mangos in season — from the farm</span></li>
+        <li><span>🚗</span><span>Free parking</span></li>
+        <li><span>🐾</span><span>Pets welcome</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- HONEST NOTE -->
+  <div class="honest-strip">
+    <span class="icon">🌿</span>
+    <p>This is a working mango farm in rural Sri Lanka — showers are cold water, and nature is close. If you're looking for a five-star resort, this isn't it. If you want something real and genuinely peaceful, you'll love it here.</p>
+  </div>
+
+  <!-- BOOK -->
+  <section class="room-book">
+    <h2>Book Directly with Aji</h2>
+    <p>No platform, no fees. Message Aji on WhatsApp — he replies fast.</p>
+    <a class="btn-wa" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
+      +94 70 506 5061
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Aji's Mango Farm &mdash; Embilipitiya, Sri Lanka</p>
+    <p class="footer-small">Site by <a href="https://github.com/yfelig/stay-barters" target="_blank">Stay Barters</a></p>
+  </footer>
+
+  <!-- FLOATING WA -->
+  <a class="wa-float" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
+  </a>
+
+  <script>
+    const slides = document.getElementById('slides');
+    const counter = document.getElementById('counter');
+    const dotsContainer = document.getElementById('sliderDots');
+    const total = document.querySelectorAll('.slide').length;
+    let current = 0;
+
+    // Build dots
+    for (let i = 0; i < total; i++) {
+      const d = document.createElement('button');
+      d.className = 'slider-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(d);
+    }
+
+    function goTo(n) {
+      current = (n + total) % total;
+      slides.style.transform = `translateX(-${current * 100}%)`;
+      counter.textContent = `${current + 1} / ${total}`;
+      document.querySelectorAll('.slider-dot').forEach((d, i) =>
+        d.classList.toggle('active', i === current)
+      );
+    }
+
+    document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+
+    // Swipe support
+    let startX = 0;
+    slides.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+    slides.addEventListener('touchend', e => {
+      const diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) goTo(current + (diff > 0 ? 1 : -1));
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') goTo(current - 1);
+      if (e.key === 'ArrowRight') goTo(current + 1);
+    });
+  </script>
+</body>
+</html>
