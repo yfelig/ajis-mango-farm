@@ -3,23 +3,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aji Fruit Farm — Lakeside Cottages, Sri Lanka</title>
-  <meta name="description" content="Four private cottages on a fruit farm beside a lake in Embilipitiya, Sri Lanka. Mangos, bananas, rambutan, dragon fruit. Breakfast included. Book direct with Aji." />
+  <title>The Farm — Aji Fruit Farm, Sri Lanka</title>
+  <meta name="description" content="Fifteen acres of tropical fruit beside a lake in Embilipitiya, Sri Lanka. Mango, banana, rambutan, dragon fruit. Kayaking, elephant safari, fireflies." />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* FARM PAGE HERO */
+    .farm-hero {
+      position: relative;
+      height: 70vh;
+      min-height: 440px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .farm-hero-img {
+      position: absolute;
+      inset: 0;
+    }
+    .farm-hero-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+    }
+    .farm-hero-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(170deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.52) 100%);
+    }
+    .farm-hero-content {
+      position: relative; z-index: 1;
+      color: #fff;
+      padding: 0 var(--side) 64px;
+    }
+    .farm-hero-content p {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 14px;
+      max-width: none;
+    }
+    .farm-hero-content h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* PHOTO STRIP — full-width image between sections */
+    .photo-strip {
+      width: 100%;
+      height: 56vh;
+      min-height: 340px;
+      overflow: hidden;
+    }
+    .photo-strip img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+      transition: transform 0.8s ease;
+    }
+    .photo-strip:hover img { transform: scale(1.02); }
+
+    /* PHOTO GRID — 2 or 3 images side by side */
+    .photo-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      height: 52vh;
+      min-height: 320px;
+    }
+    .photo-grid-2 div { overflow: hidden; }
+    .photo-grid-2 img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 0.7s ease;
+    }
+    .photo-grid-2 div:hover img { transform: scale(1.03); }
+
+    /* BOOK STRIP */
+    .book-cta {
+      padding: var(--gap) var(--side);
+      text-align: center;
+      background: var(--bg-dark);
+    }
+    .book-cta h2 { color: #fff; margin-bottom: 16px; }
+    .book-cta p { color: rgba(255,255,255,0.6); margin: 0 auto 40px; }
+    .book-cta .btn-wa { font-size: 1rem; padding: 18px 48px; }
+
+    @media (max-width: 860px) {
+      .photo-grid-2 { grid-template-columns: 1fr; height: auto; }
+      .photo-grid-2 div { height: 48vw; min-height: 220px; }
+    }
+  </style>
 </head>
 <body>
 
   <!-- NAV -->
-  <header class="nav">
-    <a href="#" class="nav-logo">Aji Fruit Farm</a>
+  <header class="nav scrolled">
+    <a href="index.html" class="nav-logo">Aji Fruit Farm</a>
     <nav class="nav-links">
       <a href="farm.html">The Farm</a>
       <a href="rooms.html">The Room</a>
       <a href="story.html">Our Story</a>
-      <a href="#contact">Find Us</a>
+      <a href="index.html#contact">Find Us</a>
     </nav>
     <a class="nav-wa" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank">
       <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
@@ -28,97 +120,69 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="hero-image">
-      <img src="photos/hero.jpg" alt="Aji Fruit Farm at dawn" />
+  <section class="farm-hero">
+    <div class="farm-hero-img">
+      <img src="photos/farm-wide.jpg" alt="Aji Fruit Farm — the cottages and orchard" />
     </div>
-    <div class="hero-content">
-      <p class="hero-label">Embilipitiya &nbsp;·&nbsp; Sri Lanka</p>
-      <h1>Aji<br>Fruit Farm</h1>
-      <p class="hero-tagline">Sleep in a fruit orchard.<br>Wake up to the lake.</p>
+    <div class="farm-hero-content">
+      <p>Embilipitiya &nbsp;·&nbsp; Sri Lanka</p>
+      <h1>The<br>Farm</h1>
     </div>
-    <a class="hero-scroll" href="#welcome" aria-label="Scroll down">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-    </a>
   </section>
 
-  <!-- 01 WELCOME -->
-  <section class="split" id="welcome">
+  <!-- THE ORCHARD -->
+  <section class="split" id="orchard">
     <div class="split-text">
-      <span class="label">01 &mdash; WELCOME</span>
-      <h2>A Family Farm,<br>Open to the World</h2>
-      <p>Fifteen acres of tropical fruit — mango, banana, rambutan, dragon fruit. A lake at the edge of the orchard. Four private cottages, each one set back in the trees.</p>
-      <a class="text-link" href="farm.html">About the farm <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <span class="label">01 &mdash; THE ORCHARD</span>
+      <h2>Fifteen Acres<br>of Fruit</h2>
+      <p>Aji started with papaya. Then pomegranate. By 2018 this was Sri Lanka's top-ranked commercial fruit farm. After 2020 the focus shifted — but the land stayed the same.</p>
+      <p>Today the orchard grows mango, coconut, banana, rambutan, star fruit, dragon fruit. Most of it is for the farm. Some of it lands on your breakfast table.</p>
     </div>
     <div class="split-image">
-      <img src="photos/farm-wide.jpg" alt="The mango farm and lake" />
+      <img src="photos/hero.jpg" alt="The path through the orchard to the lake" loading="lazy" />
     </div>
   </section>
 
-  <!-- 02 MEET AJI -->
-  <section class="split split--reverse" id="aji">
+  <!-- PHOTO GRID: two images side by side -->
+  <div class="photo-grid-2">
+    <div>
+      <img src="photos/cottage-exterior.jpg" alt="Cottage among the trees" loading="lazy" />
+    </div>
+    <div>
+      <img src="photos/room-view.jpg" alt="View from the cottage to the lake" loading="lazy" />
+    </div>
+  </div>
+
+  <!-- THE LAKE -->
+  <section class="split split--reverse" id="lake">
     <div class="split-image">
-      <img src="photos/aji.jpg" alt="Ajith and his daughter at the farm" />
+      <img src="photos/lake.jpg" alt="The lake at dawn" loading="lazy" />
     </div>
     <div class="split-text">
-      <span class="label">02 &mdash; YOUR HOST</span>
-      <h2>Meet Aji</h2>
-      <p>Ajith worked abroad for six years, came back, and in 2006 bought this land. What followed was twenty years of building something — a farm, then a crisis, then a different kind of place entirely.</p>
-      <p class="host-quote">"When guests come, they are happy. So I am also happy."</p>
-      <a class="text-link" href="story.html">Read his story <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <span class="label">02 &mdash; THE LAKE</span>
+      <h2>The Lake.<br>The Fireflies.</h2>
+      <p>The orchard runs right to the water's edge. In the morning there's mist on the lake and the farm is quiet. At night there are fireflies.</p>
+      <p>Embilipitiya is not on the tourist trail. Udawalawe — elephant country — is 45 minutes south. Most guests combine the two.</p>
+      <p>Most people come for one night. Most stay longer.</p>
     </div>
   </section>
 
-  <!-- 03 THE COTTAGES -->
-  <section class="cottages" id="cottages">
-    <div class="cottages-header">
-      <span class="label">03 &mdash; THE COTTAGES</span>
-      <h2>Four Private Rooms</h2>
-      <p class="cottages-sub">Each cottage is completely separate — your own entrance, your own veranda, your own view of the lake. Raw concrete, handmade teak bed, and a bathroom open to the sky.</p>
-    </div>
-    <a class="cottage-teaser" href="rooms.html">
-      <div class="teaser-grid">
-        <div class="teaser-main">
-          <img src="photos/room-doorway.jpg" alt="The cottage" loading="lazy" />
-        </div>
-        <div class="teaser-side">
-          <img src="photos/cottage-interior.jpg" alt="Sitting area" loading="lazy" />
-          <img src="photos/bathroom.jpg" alt="Open-air bathroom" loading="lazy" />
-        </div>
-      </div>
-      <div class="teaser-cta">
-        <span>See all room photos</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
-    </a>
-  </section>
+  <!-- FULL PHOTO STRIP -->
+  <div class="photo-strip">
+    <img src="photos/kayak.jpg" alt="Kayaking on the lake" loading="lazy" />
+  </div>
 
-  <!-- 03 THE SETTING -->
-  <section class="split split--reverse" id="setting">
-    <div class="split-image">
-      <img src="photos/lake.jpg" alt="The lake at Aji Fruit Farm" />
-    </div>
-    <div class="split-text">
-      <span class="label">04 &mdash; THE SETTING</span>
-      <h2>A Lake, a Farm,<br>and Fireflies at Night</h2>
-      <p>The cottages sit at the edge of the lake, surrounded by fruit trees. Mist on the water in the morning. Fireflies at night.</p>
-      <a class="text-link" href="farm.html">Explore the farm <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-    </div>
-  </section>
-
-  <!-- 04 EXPLORE -->
+  <!-- EXPLORE -->
   <section class="explore" id="explore">
     <div class="explore-header">
-      <span class="label">05 &mdash; EXPLORE</span>
+      <span class="label">03 &mdash; FROM HERE</span>
       <h2>From the Farm</h2>
     </div>
     <div class="activities">
       <div class="activity">
         <div class="activity-img">
           <img src="photos/kayak.jpg" alt="Kayaking on the lake" loading="lazy" />
-          <div class="activity-overlay">
-            <span>On the property</span>
-          </div>
+          <div class="activity-overlay"><span>On the property</span></div>
         </div>
         <h3>Kayaking</h3>
         <p>Aji has kayaks on the lake. Take one out at dawn — the water is flat and the farm is still quiet.</p>
@@ -126,9 +190,7 @@
       <div class="activity">
         <div class="activity-img">
           <img src="photos/udawalawe.jpg" alt="Udawalawe National Park" loading="lazy" />
-          <div class="activity-overlay">
-            <span>45 min away</span>
-          </div>
+          <div class="activity-overlay"><span>45 min away</span></div>
         </div>
         <h3>Udawalawe Safari</h3>
         <p>Elephant country. Big herds, open grassland. The jeep picks you up here — Aji arranges it.</p>
@@ -136,9 +198,7 @@
       <div class="activity">
         <div class="activity-img">
           <img src="photos/horses.jpg" alt="Horse riding nearby" loading="lazy" />
-          <div class="activity-overlay">
-            <span>Nearby</span>
-          </div>
+          <div class="activity-overlay"><span>Nearby</span></div>
         </div>
         <h3>Horse Riding</h3>
         <p>A horse riding farm a short drive from here. Ask Aji.</p>
@@ -146,64 +206,38 @@
     </div>
   </section>
 
-  <!-- 05 THE FOOD -->
+  <!-- PHOTO GRID: farm + food -->
+  <div class="photo-grid-2">
+    <div>
+      <img src="photos/bathroom.jpg" alt="Open-sky bathroom" loading="lazy" />
+    </div>
+    <div>
+      <img src="photos/food.jpg" alt="Breakfast at the farm" loading="lazy" />
+    </div>
+  </div>
+
+  <!-- THE FOOD -->
   <section class="split" id="food">
     <div class="split-text">
-      <span class="label">06 &mdash; THE FOOD</span>
+      <span class="label">04 &mdash; THE FOOD</span>
       <h2>Breakfast Every Morning.<br>Sri Lankan on Request.</h2>
       <p>Breakfast is included. Every morning Aji's family puts out a spread — fresh fruit from the farm, eggs, tea.</p>
       <p>If you ask the day before, they'll cook a proper Sri Lankan meal. Rice, curry, fresh fruit from the trees outside. All made here.</p>
       <p>There's no restaurant nearby. You won't miss it.</p>
     </div>
     <div class="split-image">
-      <img src="photos/food.jpg" alt="Sri Lankan breakfast at the farm" />
+      <img src="photos/room-doorway.jpg" alt="The cottage door open to the farm" loading="lazy" />
     </div>
   </section>
 
-  <!-- 06 REVIEWS -->
-  <section class="reviews" id="reviews">
-    <span class="label">07 &mdash; WHAT GUESTS SAY</span>
-    <div class="testimonial" id="testimonial">
-      <blockquote id="quote-text">"This was probably the best Airbnb we've ever stayed at. The calmness and nature are breathtaking. The highlight is the bathroom with open sky — and the fireflies by night."</blockquote>
-      <cite id="quote-author">— Sarah & Felix, Germany</cite>
-    </div>
-    <div class="testimonial-dots" id="dots">
-      <button class="dot active" data-index="0"></button>
-      <button class="dot" data-index="1"></button>
-      <button class="dot" data-index="2"></button>
-    </div>
-    <p class="reviews-rating">★★★★★ &nbsp; 5.0 on Airbnb &nbsp;·&nbsp; Guest Favorite</p>
-  </section>
-
-  <!-- 07 FIND US -->
-  <section class="contact" id="contact">
-    <div class="contact-info">
-      <span class="label label--light">08 &mdash; FIND US</span>
-      <h2>Aji Fruit Farm</h2>
-      <address>
-        Embilipitiya<br>
-        Sabaragamuwa Province<br>
-        Sri Lanka
-      </address>
-      <div class="contact-wa">
-        <p>Book directly with Aji on WhatsApp — no fees, no platform. Airport transfer available on request.</p>
-        <a class="btn-wa" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
-          +94 70 506 5061
-        </a>
-      </div>
-    </div>
-    <div class="contact-map">
-      <iframe
-        src="https://maps.google.com/maps?q=Embilipitiya,+Sabaragamuwa,+Sri+Lanka&t=&z=13&ie=UTF8&iwloc=&output=embed"
-        width="100%"
-        height="100%"
-        style="border:0;"
-        allowfullscreen=""
-        loading="lazy"
-        title="Aji Fruit Farm location">
-      </iframe>
-    </div>
+  <!-- BOOK CTA -->
+  <section class="book-cta">
+    <h2>Book Directly with Aji</h2>
+    <p>No platform, no fees. Message Aji on WhatsApp — he replies fast.</p>
+    <a class="btn-wa" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
+      +94 70 506 5061
+    </a>
   </section>
 
   <!-- FOOTER -->
@@ -225,6 +259,11 @@
     <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
   </a>
 
-  <script src="script.js"></script>
+  <script>
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 80);
+    }, { passive: true });
+  </script>
 </body>
 </html>

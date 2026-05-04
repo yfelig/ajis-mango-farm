@@ -493,6 +493,23 @@ cite {
   height: 100%;
 }
 
+/* TEXT LINK — arrow CTA */
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  border-bottom: 1px solid var(--text);
+  padding-bottom: 2px;
+  margin-top: 24px;
+  transition: gap 0.2s;
+}
+.text-link:hover { gap: 14px; }
+
 /* HOST QUOTE */
 .host-quote {
   font-family: var(--font-display);

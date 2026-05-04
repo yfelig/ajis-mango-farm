@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Story — Aji Fruit Farm, Sri Lanka</title>
+  <meta name="description" content="Ajith worked abroad for six years, came back, and built Sri Lanka's top-ranked fruit farm. Then everything changed. Now he runs four cottages in the orchard." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* STORY HERO */
+    .story-hero {
+      position: relative;
+      height: 85vh;
+      min-height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .story-hero-img {
+      position: absolute;
+      inset: 0;
+    }
+    .story-hero-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+    }
+    .story-hero-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        170deg,
+        rgba(0,0,0,0.05) 0%,
+        rgba(0,0,0,0.62) 100%
+      );
+    }
+    .story-hero-content {
+      position: relative; z-index: 1;
+      color: #fff;
+      padding: 0 var(--side) 72px;
+    }
+    .story-hero-content p {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 14px;
+      max-width: none;
+    }
+    .story-hero-content h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* STORY BODY */
+    .story-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: var(--gap) var(--side);
+    }
+    .story-body .label { margin-bottom: 12px; }
+    .story-body h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 24px;
+    }
+    .story-body p {
+      max-width: none;
+      font-size: 1.02rem;
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+
+    /* PULL QUOTE */
+    .pull-quote {
+      padding: var(--gap) var(--side);
+      text-align: center;
+      background: var(--bg-alt);
+    }
+    .pull-quote blockquote {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      max-width: 760px;
+      margin: 0 auto 20px;
+    }
+    .pull-quote cite { font-size: 0.82rem; }
+
+    /* PORTRAIT SPLIT */
+    .story-portrait {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 560px;
+    }
+    .story-portrait-image {
+      overflow: hidden;
+    }
+    .story-portrait-image img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+    }
+    .story-portrait-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--gap) var(--side);
+    }
+
+    /* BOOK CTA */
+    .book-cta {
+      padding: var(--gap) var(--side);
+      text-align: center;
+      background: var(--bg-dark);
+    }
+    .book-cta h2 { color: #fff; margin-bottom: 16px; }
+    .book-cta p { color: rgba(255,255,255,0.6); margin: 0 auto 40px; }
+    .book-cta .btn-wa { font-size: 1rem; padding: 18px 48px; }
+
+    @media (max-width: 860px) {
+      .story-portrait { grid-template-columns: 1fr; }
+      .story-portrait-image { aspect-ratio: 4/3; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav scrolled">
+    <a href="index.html" class="nav-logo">Aji Fruit Farm</a>
+    <nav class="nav-links">
+      <a href="farm.html">The Farm</a>
+      <a href="rooms.html">The Room</a>
+      <a href="story.html">Our Story</a>
+      <a href="index.html#contact">Find Us</a>
+    </nav>
+    <a class="nav-wa" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
+      Book Direct
+    </a>
+  </header>
+
+  <!-- HERO -->
+  <section class="story-hero">
+    <div class="story-hero-img">
+      <img src="photos/aji.jpg" alt="Ajith at his farm" />
+    </div>
+    <div class="story-hero-content">
+      <p>Embilipitiya &nbsp;·&nbsp; Sri Lanka</p>
+      <h1>Our<br>Story</h1>
+    </div>
+  </section>
+
+  <!-- ACT I: ABROAD -->
+  <section class="story-body">
+    <span class="label">01 &mdash; The Beginning</span>
+    <h2>Six Years Away</h2>
+    <p>Ajith — Aji — left Sri Lanka when he was young. Six years working abroad, enough money saved to come home and do something with it.</p>
+    <p>In 2006 he bought fifteen acres in Embilipitiya. The land was empty. There was no orchard, no lake view, no plan except to grow something.</p>
+    <p>He started with papaya. Then pomegranate. He learned as he went — what the land wanted, which crops took, which ones didn't. He kept what worked and planted more of it.</p>
+  </section>
+
+  <!-- PORTRAIT SPLIT -->
+  <div class="story-portrait">
+    <div class="story-portrait-image">
+      <img src="photos/farm-wide.jpg" alt="The farm Ajith built" loading="lazy" />
+    </div>
+    <div class="story-portrait-text">
+      <span class="label">02 &mdash; The Farm</span>
+      <h2>Number One in Sri Lanka</h2>
+      <p>By 2018 the farm was formally ranked the top commercial fruit farm in the country. Fifteen acres, fully productive. Mango, coconut, banana, rambutan, star fruit, dragon fruit.</p>
+      <p>This was the goal, and it was done. Then 2020 arrived.</p>
+    </div>
+  </div>
+
+  <!-- ACT II: THE CRISIS -->
+  <section class="story-body">
+    <span class="label">03 &mdash; The Hard Years</span>
+    <h2>Everything Changed</h2>
+    <p>The pandemic hit. Then in 2021 the Sri Lankan government banned chemical fertilizers overnight — a decision later reversed, but not before it had already done the damage. Crops failed across the country. Aji's farm was no exception.</p>
+    <p>For a man who had spent fifteen years building something, it was a difficult few years. The commercial side of the farm took a serious hit. Something had to change.</p>
+    <p>He had been to Hikkaduwa. He had seen how those beach guesthouses worked — small, personal, run by the family, full of guests from all over the world. He liked the atmosphere. He wanted that, but in the country. In the orchard. By the lake.</p>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <div class="pull-quote">
+    <blockquote>"When guests come, they are happy. So I am also happy."</blockquote>
+    <cite>— Ajith</cite>
+  </div>
+
+  <!-- ACT III: THE COTTAGES -->
+  <section class="story-body">
+    <span class="label">04 &mdash; Now</span>
+    <h2>Four Cottages.<br>One Family.</h2>
+    <p>Four months ago, Aji opened the first cottages. Four rooms, each one set back in the trees at the edge of the lake. His wife cooks breakfast. His daughter helps. He handles everything else — the kayaks, the safari jeep bookings, the airport pickup if you need it.</p>
+    <p>He wants to keep it small. Four rooms is enough. The farm is still there — the fruit trees, the lake, the land he has tended for twenty years. The guests just get to live inside it for a few days.</p>
+    <p>Most people come for one night. Most stay longer.</p>
+  </section>
+
+  <!-- BOOK CTA -->
+  <section class="book-cta">
+    <h2>Book Directly with Aji</h2>
+    <p>No platform, no fees. Message Aji on WhatsApp — he replies fast.</p>
+    <a class="btn-wa" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
+      +94 70 506 5061
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Aji Fruit Farm &mdash; Embilipitiya, Sri Lanka</p>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/ajifruitfarm/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/ajifruitfarm/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12c0 3.259.012 3.668.072 4.948.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.689.072-4.948 0-3.259-.011-3.667-.072-4.947-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+    </div>
+    <p class="footer-small">Site by <a href="https://github.com/yfelig/stay-barters" target="_blank">Stay Barters</a></p>
+  </footer>
+
+  <!-- FLOATING WHATSAPP -->
+  <a class="wa-float" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
+  </a>
+
+  <script>
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 80);
+    }, { passive: true });
+  </script>
+</body>
+</html>

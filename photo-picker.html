@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>בחירת תמונות — Aji Fruit Farm</title>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -18,16 +19,43 @@
       font-size: 1rem; color: #555;
       margin-bottom: 48px; line-height: 1.7;
     }
-    .section-title {
-      font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: #999; margin-bottom: 20px; margin-top: 56px;
-      padding-bottom: 10px; border-bottom: 1px solid #ddd;
+
+    /* PAGE SECTION */
+    .page-section {
+      margin-top: 60px;
     }
+    .page-header {
+      display: flex; align-items: baseline; gap: 16px;
+      margin-bottom: 6px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #1b3826;
+    }
+    .page-header h2 {
+      font-size: 1.1rem; font-weight: 700;
+      letter-spacing: 0.04em; color: #1b3826;
+    }
+    .page-header a {
+      font-size: 0.72rem; color: #888;
+      direction: ltr; text-decoration: none;
+      font-weight: 400;
+    }
+    .page-desc {
+      font-size: 0.85rem; color: #666;
+      margin-bottom: 24px; margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    /* SUBSECTION LABEL */
+    .subsection {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: #999; margin-bottom: 16px; margin-top: 36px;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
     }
 
     /* CARD */
@@ -41,24 +69,41 @@
     }
     .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
     .card.approved { border-color: #1b3826; }
-    .card.replaced { border-color: #c07a00; }
+    .card.replaced  { border-color: #c07a00; }
+    .card.has-extras { border-color: #4a7cc7; }
+    .card.approved.has-extras { border-color: #1b3826; }
 
-    /* STATUS BADGE (top-right corner) */
+    /* PAGE USAGE TAGS (top-left) */
+    .page-tags {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      position: absolute; top: 8px; left: 8px;
+      z-index: 4;
+    }
+    .page-tag {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 6px; border-radius: 2px;
+      line-height: 1.5;
+    }
+    .page-tag.idx  { background: rgba(27,56,38,0.85);  color: #fff; }
+    .page-tag.room { background: rgba(90,55,30,0.85);  color: #fff; }
+    .page-tag.farm { background: rgba(40,80,160,0.85); color: #fff; }
+    .page-tag.story{ background: rgba(100,50,110,0.85);color: #fff; }
+
+    /* STATUS BADGE (top-right) */
     .status-badge {
       display: none;
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 34px; height: 34px;
+      position: absolute; top: 8px; right: 8px;
+      width: 30px; height: 30px;
       border-radius: 50%;
       align-items: center; justify-content: center;
-      font-size: 16px; z-index: 3; color: white;
+      font-size: 14px; z-index: 3; color: white;
     }
     .card.approved .status-badge { display: flex; background: #1b3826; }
-    .card.replaced .status-badge { display: flex; background: #c07a00; content: "↑"; }
+    .card.replaced .status-badge { display: flex; background: #c07a00; }
 
     /* IMAGE AREA */
-    .img-wrap { position: relative; cursor: pointer; }
+    .img-wrap { position: relative; }
     .card-img {
       width: 100%; aspect-ratio: 4/3;
       object-fit: cover; display: block;
@@ -67,35 +112,40 @@
       display: none;
       position: absolute; bottom: 0; left: 0; right: 0;
       background: rgba(192,122,0,0.88);
-      color: white; font-size: 0.78rem; font-weight: 500;
-      padding: 6px 12px; text-align: center;
+      color: white; font-size: 0.75rem; font-weight: 500;
+      padding: 5px 10px; text-align: center;
     }
     .card.replaced .replaced-tag { display: block; }
 
     /* CARD BODY */
-    .card-body { padding: 16px; }
+    .card-body { padding: 14px; }
     .card-filename {
-      font-size: 0.72rem; color: #aaa; margin-bottom: 6px;
+      font-size: 0.68rem; color: #bbb; margin-bottom: 5px;
       direction: ltr; text-align: left;
     }
-    .card-role { font-size: 0.8rem; font-weight: 500; color: #1b3826; margin-bottom: 6px; }
-    .card-desc { font-size: 0.9rem; color: #444; line-height: 1.6; margin-bottom: 12px; }
+    .card-role { font-size: 0.78rem; font-weight: 600; color: #1b3826; margin-bottom: 5px; }
+    .card-desc { font-size: 0.85rem; color: #555; line-height: 1.6; margin-bottom: 10px; }
 
-    .badge {
-      display: inline-block; font-size: 0.68rem; font-weight: 500;
-      padding: 3px 8px; border-radius: 2px; margin-bottom: 14px;
+    .usage-note {
+      font-size: 0.72rem; color: #888; font-style: italic;
+      margin-bottom: 12px; line-height: 1.5;
     }
-    .badge.current { background: #d4edda; color: #1b3826; }
-    .badge.unused   { background: #fff3cd; color: #856404; }
+
+    .photo-badge {
+      display: inline-block; font-size: 0.65rem; font-weight: 500;
+      padding: 2px 7px; border-radius: 2px; margin-bottom: 12px;
+    }
+    .photo-badge.current { background: #d4edda; color: #1b3826; }
+    .photo-badge.stock   { background: #fff3cd; color: #856404; }
 
     /* ACTIONS */
-    .actions { display: flex; gap: 8px; margin-top: 4px; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .btn-approve {
-      flex: 1;
-      padding: 9px 12px;
+      flex: 1; min-width: 80px;
+      padding: 8px 10px;
       font-family: 'Heebo', sans-serif;
-      font-size: 0.82rem; font-weight: 500;
+      font-size: 0.8rem; font-weight: 500;
       background: #1b3826; color: white;
       border: none; border-radius: 3px;
       cursor: pointer; transition: opacity 0.2s;
@@ -104,14 +154,14 @@
     .card.approved .btn-approve { background: #aaa; }
 
     .btn-upload-wrap {
-      flex: 1;
+      flex: 1; min-width: 80px;
       position: relative;
     }
     .btn-upload {
       display: block; width: 100%;
-      padding: 9px 12px;
+      padding: 8px 10px;
       font-family: 'Heebo', sans-serif;
-      font-size: 0.82rem; font-weight: 500;
+      font-size: 0.8rem; font-weight: 500;
       background: #fff3cd; color: #856404;
       border: 1px solid #e0c060; border-radius: 3px;
       cursor: pointer; text-align: center;
@@ -120,9 +170,63 @@
     .btn-upload:hover { background: #ffeea0; }
     .card.replaced .btn-upload { background: #c07a00; color: white; border-color: #c07a00; }
     .btn-upload input[type="file"] {
-      position: absolute; inset: 0;
-      opacity: 0; cursor: pointer; width: 100%;
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%;
     }
+
+    /* ADD EXTRAS */
+    .btn-extras-wrap {
+      width: 100%; position: relative; margin-top: 8px;
+    }
+    .btn-extras {
+      display: block; width: 100%;
+      padding: 8px 10px;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.8rem; font-weight: 500;
+      background: #e8f0fc; color: #2a5ab0;
+      border: 1px solid #b8cef0; border-radius: 3px;
+      cursor: pointer; text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-extras:hover { background: #d0e2ff; }
+    .btn-extras input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%;
+    }
+
+    /* EXTRAS STRIP */
+    .extras-area {
+      display: none;
+      padding: 10px 12px 12px;
+      background: #f0f4fd;
+      border-top: 1px solid #d0e2ff;
+    }
+    .extras-area.visible { display: block; }
+    .extras-label {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #2a5ab0; margin-bottom: 8px;
+    }
+    .extras-strip {
+      display: flex; gap: 8px;
+      overflow-x: auto; padding-bottom: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: #b8cef0 transparent;
+    }
+    .extra-thumb {
+      position: relative; flex-shrink: 0;
+      width: 72px; height: 72px;
+      border-radius: 3px; overflow: hidden;
+    }
+    .extra-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .extra-thumb .remove-extra {
+      position: absolute; top: 2px; right: 2px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(0,0,0,0.65); color: white;
+      border: none; font-size: 11px; font-weight: 700;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      line-height: 1; transition: background 0.15s;
+    }
+    .extra-thumb .remove-extra:hover { background: #c00; }
 
     /* SUMMARY BAR */
     .summary {
@@ -130,386 +234,662 @@
       background: #1b3826; color: white;
       padding: 14px 24px;
       display: flex; align-items: center; justify-content: space-between;
-      font-size: 0.88rem; gap: 16px;
+      font-size: 0.85rem; gap: 16px; flex-wrap: wrap;
     }
     .summary-col { display: flex; flex-direction: column; gap: 2px; }
-    .summary-label { font-size: 0.72rem; color: rgba(255,255,255,0.55); }
+    .summary-label { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
     .summary-val { font-weight: 500; }
     .summary-val.replaced-val { color: #ffd166; }
+    .summary-val.extras-val   { color: #88b4ff; }
+
+    .btn-download {
+      padding: 10px 22px;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      background: #fff; color: #1b3826;
+      border: none; border-radius: 3px;
+      cursor: pointer; transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .btn-download:hover { opacity: 0.88; }
+    .btn-download:disabled {
+      opacity: 0.35; cursor: default;
+    }
   </style>
 </head>
 <body>
 
   <h1>בחירת תמונות לאתר</h1>
   <p class="subtitle">
-    <strong>אישור</strong> — התמונה הנוכחית טובה, השאירי אותה.<br>
-    <strong>העלי תמונה אחרת</strong> — בחרי תמונה מהמחשב / הטלפון שלך ואני אחליף אותה באתר.
+    האתר מחולק ל-4 עמודים — כל תמונה מסומנת בעמוד/ים שבו היא מופיעה.<br>
+    <strong>אישור</strong> — התמונה טובה, השאירי אותה. &nbsp;
+    <strong>החלפה</strong> — העלי תמונה אחרת במקומה. &nbsp;
+    <strong>הוספה</strong> — הוסיפי תמונות נוספות לסעיף (יוצגו כגלריה).
   </p>
 
-  <!-- HERO -->
-  <div class="section-title">תמונת פתיחה ראשית (Hero)</div>
-  <div class="grid">
-    <div class="card" id="card-hero.jpg">
-      <div class="status-badge" id="badge-hero.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/hero.jpg" id="img-hero.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">hero.jpg</div>
-        <div class="card-role">תמונת הפתיחה — רואים אותה ראשונה</div>
-        <div class="card-desc">שביל אבן בין עצי דקל גבוהים שמוביל לכיוון האגם. תמונת הכניסה לאתר — הרושם הראשון.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('hero.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-hero.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'hero.jpg')" />
-          </label>
+  <!-- ═══════════════════════════════════
+       PAGE 1 — INDEX.HTML (Homepage)
+  ═══════════════════════════════════ -->
+  <div class="page-section">
+    <div class="page-header">
+      <h2>עמוד ראשי</h2>
+      <a href="index.html" target="_blank">index.html ↗</a>
+    </div>
+    <p class="page-desc">הדף הראשי — hero ראשי, קבלת פנים, המארח, הקוטג'ים, הסביבה, פעילויות, האוכל.</p>
+
+    <div class="subsection">Hero — תמונת הפתיחה הגדולה</div>
+    <div class="grid">
+
+      <!-- hero.jpg -->
+      <div class="card" id="card-hero.jpg">
+        <div class="status-badge" id="badge-hero.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/hero.jpg" id="img-hero.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">hero.jpg</div>
+          <div class="card-role">תמונת הפתיחה הראשית</div>
+          <div class="card-desc">שביל אבן בין עצי דקל גבוהים — הרושם הראשון של האתר.</div>
+          <div class="usage-note">עמוד ראשי: hero · עמוד חווה: בסעיף הפרדס</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('hero.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-hero.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'hero.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-hero.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-hero.jpg"></div>
         </div>
       </div>
+
     </div>
+
+    <div class="subsection">קבלת פנים + המארח</div>
+    <div class="grid">
+
+      <!-- farm-wide.jpg -->
+      <div class="card" id="card-farm-wide.jpg">
+        <div class="status-badge" id="badge-farm-wide.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+          <span class="page-tag story">סיפור</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/farm-wide.jpg" id="img-farm-wide.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">farm-wide.jpg</div>
+          <div class="card-role">תצוגה כללית של החווה</div>
+          <div class="card-desc">שני קוטג'ים עם גגות אדומים בתוך ירק סבוך.</div>
+          <div class="usage-note">עמוד ראשי: welcome split · עמוד חווה: hero · עמוד סיפור: split portrait</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('farm-wide.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-farm-wide.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'farm-wide.jpg')" />
+            </label>
+          </div>
+          <label class="btn-extras-wrap">
+            <span class="btn-extras">+ עוד תמונות של החווה</span>
+            <input type="file" accept="image/*" multiple onchange="handleExtras(event, 'farm-wide.jpg')" />
+          </label>
+        </div>
+        <div class="extras-area" id="extras-area-farm-wide.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-farm-wide.jpg"></div>
+        </div>
+      </div>
+
+      <!-- aji.jpg -->
+      <div class="card" id="card-aji.jpg">
+        <div class="status-badge" id="badge-aji.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag story">סיפור</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/aji.jpg" id="img-aji.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">aji.jpg</div>
+          <div class="card-role">אג'ית והמשפחה</div>
+          <div class="card-desc">אג'ית, הבת שלו, והכלב — צוחקים ביחד.</div>
+          <div class="usage-note">עמוד ראשי: "Meet Aji" split · עמוד סיפור: hero ראשי (תמונה גדולה מאוד)</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('aji.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-aji.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'aji.jpg')" />
+            </label>
+          </div>
+          <label class="btn-extras-wrap">
+            <span class="btn-extras">+ עוד תמונות של המשפחה</span>
+            <input type="file" accept="image/*" multiple onchange="handleExtras(event, 'aji.jpg')" />
+          </label>
+        </div>
+        <div class="extras-area" id="extras-area-aji.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-aji.jpg"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="subsection">הסביבה + פעילויות</div>
+    <div class="grid">
+
+      <!-- lake.jpg -->
+      <div class="card" id="card-lake.jpg">
+        <div class="status-badge" id="badge-lake.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/lake.jpg" id="img-lake.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">lake.jpg</div>
+          <div class="card-role">האגם</div>
+          <div class="card-desc">נדנדת עץ תלויה מעל אגם שמשקף כמו מראה.</div>
+          <div class="usage-note">עמוד ראשי: setting split · עמוד חווה: lake split</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('lake.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-lake.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'lake.jpg')" />
+            </label>
+          </div>
+          <label class="btn-extras-wrap">
+            <span class="btn-extras">+ עוד תמונות של האגם</span>
+            <input type="file" accept="image/*" multiple onchange="handleExtras(event, 'lake.jpg')" />
+          </label>
+        </div>
+        <div class="extras-area" id="extras-area-lake.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-lake.jpg"></div>
+        </div>
+      </div>
+
+      <!-- kayak.jpg -->
+      <div class="card" id="card-kayak.jpg">
+        <div class="status-badge" id="badge-kayak.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/kayak.jpg" id="img-kayak.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">kayak.jpg</div>
+          <div class="card-role">קיאק על האגם</div>
+          <div class="card-desc">סירה ירוקה מושכת לחוף מתחת לעצי דקל.</div>
+          <div class="usage-note">עמוד ראשי: explore · עמוד חווה: photo strip (מלא-רוחב) + פעילות</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('kayak.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-kayak.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'kayak.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-kayak.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-kayak.jpg"></div>
+        </div>
+      </div>
+
+      <!-- udawalawe.jpg -->
+      <div class="card" id="card-udawalawe.jpg">
+        <div class="status-badge" id="badge-udawalawe.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/udawalawe.jpg" id="img-udawalawe.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">udawalawe.jpg</div>
+          <div class="card-role">ספארי אודואלאווה</div>
+          <div class="card-desc">פיל ואיילה ליד מאגר מים.</div>
+          <div class="usage-note">עמוד ראשי + חווה: כרטיס פעילות. לא מהצילומים שלנו — החלפה מומלצת.</div>
+          <span class="photo-badge stock">לא הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('udawalawe.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-udawalawe.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'udawalawe.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-udawalawe.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-udawalawe.jpg"></div>
+        </div>
+      </div>
+
+      <!-- horses.jpg -->
+      <div class="card" id="card-horses.jpg">
+        <div class="status-badge" id="badge-horses.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/horses.jpg" id="img-horses.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">horses.jpg</div>
+          <div class="card-role">רכיבה על סוסים</div>
+          <div class="card-desc">חוות סוסים ליד החווה — פעילות שאג'ית יכול לסדר.</div>
+          <div class="usage-note">עמוד ראשי + חווה: כרטיס פעילות. אם יש תמונה טובה יותר, העלי.</div>
+          <span class="photo-badge stock">לא הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('horses.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-horses.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'horses.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-horses.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-horses.jpg"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="subsection">האוכל</div>
+    <div class="grid">
+
+      <!-- food.jpg -->
+      <div class="card" id="card-food.jpg">
+        <div class="status-badge" id="badge-food.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/food.jpg" id="img-food.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">food.jpg</div>
+          <div class="card-role">ארוחת בוקר</div>
+          <div class="card-desc">שולחן בוקר — ביצים, קומקום, פירות.</div>
+          <div class="usage-note">עמוד ראשי: food split · עמוד חווה: photo grid. יש לך עוד תמונות של אוכל? הוסיפי!</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('food.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-food.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'food.jpg')" />
+            </label>
+          </div>
+          <label class="btn-extras-wrap">
+            <span class="btn-extras">+ עוד תמונות של אוכל (בוקר, פירות, ארוחות...)</span>
+            <input type="file" accept="image/*" multiple onchange="handleExtras(event, 'food.jpg')" />
+          </label>
+        </div>
+        <div class="extras-area" id="extras-area-food.jpg">
+          <div class="extras-label">תמונות נוספות — יוצגו כגלריה</div>
+          <div class="extras-strip" id="extras-strip-food.jpg"></div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /page-section index -->
+
+
+  <!-- ═══════════════════════════════════
+       PAGE 2 — ROOMS.HTML
+  ═══════════════════════════════════ -->
+  <div class="page-section">
+    <div class="page-header">
+      <h2>עמוד הקוטג'</h2>
+      <a href="rooms.html" target="_blank">rooms.html ↗</a>
+    </div>
+    <p class="page-desc">9 תמונות בסליידר — מציגות את הקוטג' מבחוץ ומבפנים. הסדר בסליידר הוא הסדר שלהלן.</p>
+
+    <div class="subsection">תמונות הסליידר (לפי סדר)</div>
+    <div class="grid">
+
+      <!-- room-doorway.jpg -->
+      <div class="card" id="card-room-doorway.jpg">
+        <div class="status-badge" id="badge-room-doorway.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/room-doorway.jpg" id="img-room-doorway.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">room-doorway.jpg</div>
+          <div class="card-role">תמונה ראשונה בסליידר</div>
+          <div class="card-desc">דלת פתוחה למחצה — מבעדה רואים את המיטה ואת האגם ברקע.</div>
+          <div class="usage-note">קוטג': ראשונה בסליידר · ראשי: תמונה ראשית בתצוגה המקדימה · חווה: food split</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('room-doorway.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-room-doorway.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'room-doorway.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-room-doorway.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-room-doorway.jpg"></div>
+        </div>
+      </div>
+
+      <!-- cottage-exterior.jpg -->
+      <div class="card" id="card-cottage-exterior.jpg">
+        <div class="status-badge" id="badge-cottage-exterior.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/cottage-exterior.jpg" id="img-cottage-exterior.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">cottage-exterior.jpg</div>
+          <div class="card-role">חיצוני הקוטג' — סליידר #2</div>
+          <div class="card-desc">קוטג' לבנים עם דלתות זכוכית גדולות, מוקף בעצים.</div>
+          <div class="usage-note">קוטג': סליידר #2 · חווה: photo grid</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('cottage-exterior.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-cottage-exterior.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'cottage-exterior.jpg')" />
+            </label>
+          </div>
+          <label class="btn-extras-wrap">
+            <span class="btn-extras">+ עוד תמונות מבחוץ</span>
+            <input type="file" accept="image/*" multiple onchange="handleExtras(event, 'cottage-exterior.jpg')" />
+          </label>
+        </div>
+        <div class="extras-area" id="extras-area-cottage-exterior.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-cottage-exterior.jpg"></div>
+        </div>
+      </div>
+
+      <!-- room-full.jpg -->
+      <div class="card" id="card-room-full.jpg">
+        <div class="status-badge" id="badge-room-full.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/room-full.jpg" id="img-room-full.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">room-full.jpg</div>
+          <div class="card-role">חדר שינה — סליידר #3</div>
+          <div class="card-desc">זווית רחבה של כל חדר השינה.</div>
+          <div class="usage-note">קוטג': סליידר #3 בלבד</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('room-full.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-room-full.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'room-full.jpg')" />
+            </label>
+          </div>
+          <label class="btn-extras-wrap">
+            <span class="btn-extras">+ עוד תמונות של חדר השינה</span>
+            <input type="file" accept="image/*" multiple onchange="handleExtras(event, 'room-full.jpg')" />
+          </label>
+        </div>
+        <div class="extras-area" id="extras-area-room-full.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-room-full.jpg"></div>
+        </div>
+      </div>
+
+      <!-- room-bed.jpg -->
+      <div class="card" id="card-room-bed.jpg">
+        <div class="status-badge" id="badge-room-bed.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/room-bed.jpg" id="img-room-bed.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">room-bed.jpg</div>
+          <div class="card-role">המיטה — סליידר #4</div>
+          <div class="card-desc">מיטה זוגית עם מסגרת טיק עבודת יד וכרים לבנים.</div>
+          <div class="usage-note">קוטג': סליידר #4 בלבד</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('room-bed.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-room-bed.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'room-bed.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-room-bed.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-room-bed.jpg"></div>
+        </div>
+      </div>
+
+      <!-- cottage-interior.jpg -->
+      <div class="card" id="card-cottage-interior.jpg">
+        <div class="status-badge" id="badge-cottage-interior.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+          <span class="page-tag idx">ראשי</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/cottage-interior.jpg" id="img-cottage-interior.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">cottage-interior.jpg</div>
+          <div class="card-role">פינת ישיבה — סליידר #5</div>
+          <div class="card-desc">כורסאות קטיפה מול קיר בטון.</div>
+          <div class="usage-note">קוטג': סליידר #5 · ראשי: תמונת צד בתצוגה המקדימה</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('cottage-interior.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-cottage-interior.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'cottage-interior.jpg')" />
+            </label>
+          </div>
+          <label class="btn-extras-wrap">
+            <span class="btn-extras">+ עוד תמונות מבפנים</span>
+            <input type="file" accept="image/*" multiple onchange="handleExtras(event, 'cottage-interior.jpg')" />
+          </label>
+        </div>
+        <div class="extras-area" id="extras-area-cottage-interior.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-cottage-interior.jpg"></div>
+        </div>
+      </div>
+
+      <!-- room-view.jpg -->
+      <div class="card" id="card-room-view.jpg">
+        <div class="status-badge" id="badge-room-view.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/room-view.jpg" id="img-room-view.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">room-view.jpg</div>
+          <div class="card-role">הנוף מהחדר — סליידר #6</div>
+          <div class="card-desc">מבפנים, מבט דרך הדלתות הפתוחות אל האגם.</div>
+          <div class="usage-note">קוטג': סליידר #6 · חווה: photo grid</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('room-view.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-room-view.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'room-view.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-room-view.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-room-view.jpg"></div>
+        </div>
+      </div>
+
+      <!-- bathroom.jpg -->
+      <div class="card" id="card-bathroom.jpg">
+        <div class="status-badge" id="badge-bathroom.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+          <span class="page-tag idx">ראשי</span>
+          <span class="page-tag farm">חווה</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/bathroom.jpg" id="img-bathroom.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">bathroom.jpg</div>
+          <div class="card-role">מקלחת פתוחה — סליידר #7</div>
+          <div class="card-desc">מקלחת פתוחה לשמיים עם עץ גדול — מרשים.</div>
+          <div class="usage-note">קוטג': סליידר #7 · ראשי: תמונת צד בתצוגה המקדימה · חווה: photo grid</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('bathroom.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-bathroom.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'bathroom.jpg')" />
+            </label>
+          </div>
+          <label class="btn-extras-wrap">
+            <span class="btn-extras">+ עוד תמונות של האמבטיה</span>
+            <input type="file" accept="image/*" multiple onchange="handleExtras(event, 'bathroom.jpg')" />
+          </label>
+        </div>
+        <div class="extras-area" id="extras-area-bathroom.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-bathroom.jpg"></div>
+        </div>
+      </div>
+
+      <!-- room-bathroom-sky.jpg -->
+      <div class="card" id="card-room-bathroom-sky.jpg">
+        <div class="status-badge" id="badge-room-bathroom-sky.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/room-bathroom-sky.jpg" id="img-room-bathroom-sky.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">room-bathroom-sky.jpg</div>
+          <div class="card-role">מבט למעלה דרך המקלחת — סליידר #8</div>
+          <div class="card-desc">מסתכלים ישר למעלה — רואים עצי דקל ושמיים.</div>
+          <div class="usage-note">קוטג': סליידר #8 בלבד</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('room-bathroom-sky.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-room-bathroom-sky.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'room-bathroom-sky.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-room-bathroom-sky.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-room-bathroom-sky.jpg"></div>
+        </div>
+      </div>
+
+      <!-- room-vanity.jpg -->
+      <div class="card" id="card-room-vanity.jpg">
+        <div class="status-badge" id="badge-room-vanity.jpg">✓</div>
+        <div class="page-tags">
+          <span class="page-tag room">קוטג'</span>
+        </div>
+        <div class="img-wrap">
+          <img class="card-img" src="photos/room-vanity.jpg" id="img-room-vanity.jpg" alt="" />
+          <div class="replaced-tag">הועלתה תמונה חדשה</div>
+        </div>
+        <div class="card-body">
+          <div class="card-filename">room-vanity.jpg</div>
+          <div class="card-role">כיור הרחצה — סליידר #9</div>
+          <div class="card-desc">כיור לבן עגול עם ברז שחור.</div>
+          <div class="usage-note">קוטג': סליידר #9 בלבד</div>
+          <span class="photo-badge current">הצילומים שלנו</span>
+          <div class="actions">
+            <button class="btn-approve" onclick="approve('room-vanity.jpg')">✓ אישור</button>
+            <label class="btn-upload-wrap">
+              <span class="btn-upload" id="upload-label-room-vanity.jpg">↑ החלפה</span>
+              <input type="file" accept="image/*" onchange="handleUpload(event, 'room-vanity.jpg')" />
+            </label>
+          </div>
+        </div>
+        <div class="extras-area" id="extras-area-room-vanity.jpg">
+          <div class="extras-label">תמונות נוספות</div>
+          <div class="extras-strip" id="extras-strip-room-vanity.jpg"></div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /page-section rooms -->
+
+
+  <!-- ═══════════════════════════════════
+       NOTE: farm.html + story.html
+       (photos already covered above)
+  ═══════════════════════════════════ -->
+  <div class="page-section">
+    <div class="page-header">
+      <h2>עמוד החווה + עמוד הסיפור</h2>
+      <a href="farm.html" target="_blank">farm.html ↗</a>
+    </div>
+    <p class="page-desc">
+      כל התמונות של עמוד החווה ועמוד הסיפור מופיעות כבר למעלה — הן משותפות עם העמוד הראשי ועמוד הקוטג'.<br>
+      <strong>hero.jpg</strong> (פרדס) · <strong>farm-wide.jpg</strong> (חווה כללי) · <strong>lake.jpg</strong> (אגם) · <strong>kayak.jpg</strong> · <strong>udawalawe.jpg</strong> · <strong>horses.jpg</strong> · <strong>food.jpg</strong> · <strong>bathroom.jpg</strong> · <strong>cottage-exterior.jpg</strong> · <strong>room-view.jpg</strong><br>
+      ועמוד הסיפור: <strong>aji.jpg</strong> + <strong>farm-wide.jpg</strong>.
+    </p>
   </div>
 
-  <!-- THE FARM -->
-  <div class="section-title">01 — קבלת פנים (The Farm)</div>
-  <div class="grid">
-    <div class="card" id="card-farm-wide.jpg">
-      <div class="status-badge" id="badge-farm-wide.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/farm-wide.jpg" id="img-farm-wide.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">farm-wide.jpg</div>
-        <div class="card-role">תצוגה כללית של החווה</div>
-        <div class="card-desc">שני קוטג'ים עם גגות אדומים בתוך ירק סבוך. מראה של החווה מבחוץ.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('farm-wide.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-farm-wide.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'farm-wide.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- YOUR HOST -->
-  <div class="section-title">02 — המארח (Aji)</div>
-  <div class="grid">
-    <div class="card" id="card-aji.jpg">
-      <div class="status-badge" id="badge-aji.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/aji.jpg" id="img-aji.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">aji.jpg</div>
-        <div class="card-role">תמונת אג'ית והמשפחה</div>
-        <div class="card-desc">אג'ית, הבת שלו, והכלב — צוחקים ביחד. הלב של הסיפור.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('aji.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-aji.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'aji.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- THE SETTING -->
-  <div class="section-title">04 — הסביבה (The Setting)</div>
-  <div class="grid">
-    <div class="card" id="card-lake.jpg">
-      <div class="status-badge" id="badge-lake.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/lake.jpg" id="img-lake.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">lake.jpg</div>
-        <div class="card-role">תמונת האגם</div>
-        <div class="card-desc">נדנדת עץ תלויה מעל אגם שמשקף כמו מראה. שקטה ומדהימה.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('lake.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-lake.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'lake.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- EXPLORE -->
-  <div class="section-title">05 — פעילויות (Explore)</div>
-  <div class="grid">
-    <div class="card" id="card-kayak.jpg">
-      <div class="status-badge" id="badge-kayak.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/kayak.jpg" id="img-kayak.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">kayak.jpg</div>
-        <div class="card-role">קיאק על האגם</div>
-        <div class="card-desc">סירה ירוקה קטנה מושכת לחוף מתחת לעצי דקל.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('kayak.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-kayak.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'kayak.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="card" id="card-udawalawe.jpg">
-      <div class="status-badge" id="badge-udawalawe.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/udawalawe.jpg" id="img-udawalawe.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">udawalawe.jpg</div>
-        <div class="card-role">ספארי אודואלאווה</div>
-        <div class="card-desc">פיל ואיילה ליד מאגר מים — תמונה מוויקיפדיה, לא מהצילומים שלך. אם יש לך תמונה טובה יותר, העלי.</div>
-        <span class="badge unused">לא הצילומים שלנו</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('udawalawe.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-udawalawe.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'udawalawe.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOD -->
-  <div class="section-title">06 — האוכל (The Food)</div>
-  <div class="grid">
-    <div class="card" id="card-food.jpg">
-      <div class="status-badge" id="badge-food.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/food.jpg" id="img-food.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">food.jpg</div>
-        <div class="card-role">ארוחת בוקר</div>
-        <div class="card-desc">מפרשת בוקר על השולחן — ביצים, קומקום, פירות.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('food.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-food.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'food.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- THE ROOM -->
-  <div class="section-title">03 — הקוטג' (The Room) — מופיעות בסליידר ובתצוגה המקדימה</div>
-  <div class="grid">
-
-    <div class="card" id="card-room-doorway.jpg">
-      <div class="status-badge" id="badge-room-doorway.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/room-doorway.jpg" id="img-room-doorway.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">room-doorway.jpg</div>
-        <div class="card-role">פתיחת הסליידר + תמונה ראשית בתצוגה המקדימה</div>
-        <div class="card-desc">דלת פתוחה למחצה — מבעדה רואים את המיטה ואת האגם ברקע.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('room-doorway.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-room-doorway.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'room-doorway.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="card-cottage-exterior.jpg">
-      <div class="status-badge" id="badge-cottage-exterior.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/cottage-exterior.jpg" id="img-cottage-exterior.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">cottage-exterior.jpg</div>
-        <div class="card-role">חיצוני הקוטג'</div>
-        <div class="card-desc">קוטג' לבנים עם דלתות זכוכית גדולות, מוקף בעצים.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('cottage-exterior.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-cottage-exterior.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'cottage-exterior.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="card-room-full.jpg">
-      <div class="status-badge" id="badge-room-full.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/room-full.jpg" id="img-room-full.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">room-full.jpg</div>
-        <div class="card-role">חדר שינה — תמונה כוללת</div>
-        <div class="card-desc">זווית רחבה של כל חדר השינה. אווירה כהה ומיוחדת.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('room-full.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-room-full.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'room-full.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="card-room-bed.jpg">
-      <div class="status-badge" id="badge-room-bed.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/room-bed.jpg" id="img-room-bed.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">room-bed.jpg</div>
-        <div class="card-role">המיטה</div>
-        <div class="card-desc">מיטה זוגית עם מסגרת טיק עבודת יד וכרים לבנים.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('room-bed.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-room-bed.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'room-bed.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="card-cottage-interior.jpg">
-      <div class="status-badge" id="badge-cottage-interior.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/cottage-interior.jpg" id="img-cottage-interior.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">cottage-interior.jpg</div>
-        <div class="card-role">פינת ישיבה + תמונה ב-Index</div>
-        <div class="card-desc">כורסאות קטיפה מול קיר בטון. גם בתצוגה המקדימה של הקוטג' בדף הראשי.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('cottage-interior.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-cottage-interior.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'cottage-interior.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="card-room-view.jpg">
-      <div class="status-badge" id="badge-room-view.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/room-view.jpg" id="img-room-view.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">room-view.jpg</div>
-        <div class="card-role">הנוף מהחדר</div>
-        <div class="card-desc">מבפנים, מבט דרך הדלתות הפתוחות אל האגם.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('room-view.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-room-view.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'room-view.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="card-bathroom.jpg">
-      <div class="status-badge" id="badge-bathroom.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/bathroom.jpg" id="img-bathroom.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">bathroom.jpg</div>
-        <div class="card-role">מקלחת — גם ב-Index וגם בסליידר</div>
-        <div class="card-desc">מקלחת פתוחה לשמיים עם עץ גדול. מופיעה בשני מקומות — חשובה.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('bathroom.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-bathroom.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'bathroom.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="card-room-bathroom-sky.jpg">
-      <div class="status-badge" id="badge-room-bathroom-sky.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/room-bathroom-sky.jpg" id="img-room-bathroom-sky.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">room-bathroom-sky.jpg</div>
-        <div class="card-role">מבט למעלה דרך המקלחת</div>
-        <div class="card-desc">מסתכלים ישר למעלה מהמקלחת — רואים עצי דקל ושמיים.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('room-bathroom-sky.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-room-bathroom-sky.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'room-bathroom-sky.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" id="card-room-vanity.jpg">
-      <div class="status-badge" id="badge-room-vanity.jpg">✓</div>
-      <div class="img-wrap">
-        <img class="card-img" src="photos/room-vanity.jpg" id="img-room-vanity.jpg" alt="" />
-        <div class="replaced-tag">הועלתה תמונה חדשה</div>
-      </div>
-      <div class="card-body">
-        <div class="card-filename">room-vanity.jpg</div>
-        <div class="card-role">כיור הרחצה</div>
-        <div class="card-desc">כיור לבן עגול עם ברז שחור — נקי ומינימליסטי.</div>
-        <span class="badge current">כרגע בשימוש</span>
-        <div class="actions">
-          <button class="btn-approve" onclick="approve('room-vanity.jpg')">✓ אישור</button>
-          <label class="btn-upload-wrap">
-            <span class="btn-upload" id="upload-label-room-vanity.jpg">↑ העלי תמונה אחרת</span>
-            <input type="file" accept="image/*" onchange="handleUpload(event, 'room-vanity.jpg')" />
-          </label>
-        </div>
-      </div>
-    </div>
-
-  </div>
 
   <!-- SUMMARY BAR -->
   <div class="summary">
@@ -518,17 +898,33 @@
       <span class="summary-val" id="approved-count">0</span>
     </div>
     <div class="summary-col">
-      <span class="summary-label">תמונות חדשות שהועלו</span>
-      <span class="summary-val replaced-val" id="replaced-list">אין עדיין</span>
+      <span class="summary-label">הוחלפו</span>
+      <span class="summary-val replaced-val" id="replaced-list">אין</span>
     </div>
-    <div style="font-size:0.8rem; color:rgba(255,255,255,0.5); text-align:left;">
-      כשתסיימי — שלחי לי את התמונות החדשות
+    <div class="summary-col">
+      <span class="summary-label">תמונות נוספות</span>
+      <span class="summary-val extras-val" id="extras-count">0</span>
     </div>
+    <button class="btn-download" id="btn-download" onclick="downloadPackage()" disabled>
+      ⬇ הורידי חבילה לשליחה
+    </button>
   </div>
 
   <script>
     const approved = new Set();
+    // uploads[slotName] = { fileName, file }
     const uploads  = {};
+    // extras[slotName] = [{ id, fileName, file }]
+    const extras   = {};
+    // all 17 slot names in the picker
+    const ALL_SLOTS = [
+      'hero.jpg','farm-wide.jpg','aji.jpg','lake.jpg','kayak.jpg',
+      'udawalawe.jpg','horses.jpg','food.jpg',
+      'room-doorway.jpg','cottage-exterior.jpg','room-full.jpg','room-bed.jpg',
+      'cottage-interior.jpg','room-view.jpg','bathroom.jpg',
+      'room-bathroom-sky.jpg','room-vanity.jpg'
+    ];
+    let extraCounter = 0;
 
     function approve(name) {
       const card = document.getElementById('card-' + name);
@@ -538,10 +934,7 @@
       } else {
         approved.add(name);
         card.classList.add('approved');
-        // Clear replaced state if re-approving original
-        if (!uploads[name]) {
-          card.classList.remove('replaced');
-        }
+        if (!uploads[name]) card.classList.remove('replaced');
       }
       updateSummary();
     }
@@ -552,7 +945,7 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         document.getElementById('img-' + name).src = e.target.result;
-        uploads[name] = file.name;
+        uploads[name] = { fileName: file.name, file };
         const card = document.getElementById('card-' + name);
         card.classList.add('replaced');
         card.classList.remove('approved');
@@ -563,11 +956,151 @@
       reader.readAsDataURL(file);
     }
 
+    function handleExtras(event, name) {
+      const files = Array.from(event.target.files);
+      if (!files.length) return;
+      if (!extras[name]) extras[name] = [];
+
+      files.forEach(file => {
+        const id = 'extra-' + (++extraCounter);
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          extras[name].push({ id, fileName: file.name, file });
+
+          const strip = document.getElementById('extras-strip-' + name);
+          const thumb = document.createElement('div');
+          thumb.className = 'extra-thumb';
+          thumb.id = id;
+          thumb.innerHTML =
+            '<img src="' + e.target.result + '" alt="' + file.name + '" title="' + file.name + '" />' +
+            '<button class="remove-extra" onclick="removeExtra(\'' + name + '\',\'' + id + '\')" title="הסירי">\xd7</button>';
+          strip.appendChild(thumb);
+
+          document.getElementById('extras-area-' + name).classList.add('visible');
+          document.getElementById('card-' + name).classList.add('has-extras');
+          updateSummary();
+        };
+        reader.readAsDataURL(file);
+      });
+      event.target.value = '';
+    }
+
+    function removeExtra(name, id) {
+      if (!extras[name]) return;
+      extras[name] = extras[name].filter(e => e.id !== id);
+      const el = document.getElementById(id);
+      if (el) el.remove();
+      if (extras[name].length === 0) {
+        document.getElementById('extras-area-' + name).classList.remove('visible');
+        document.getElementById('card-' + name).classList.remove('has-extras');
+      }
+      updateSummary();
+    }
+
     function updateSummary() {
       document.getElementById('approved-count').textContent = approved.size;
-      const keys = Object.keys(uploads);
+
+      const uploadKeys = Object.keys(uploads);
       document.getElementById('replaced-list').textContent =
-        keys.length === 0 ? 'אין עדיין' : keys.join(' · ');
+        uploadKeys.length === 0 ? 'אין' : uploadKeys.map(k => uploads[k].fileName).join(' · ');
+
+      const totalExtras = Object.values(extras).reduce((sum, arr) => sum + arr.length, 0);
+      if (totalExtras === 0) {
+        document.getElementById('extras-count').textContent = '0';
+      } else {
+        const detail = Object.entries(extras)
+          .filter(([, arr]) => arr.length > 0)
+          .map(([k, arr]) => k.replace('.jpg','') + ': ' + arr.length)
+          .join(', ');
+        document.getElementById('extras-count').textContent = totalExtras + ' (' + detail + ')';
+      }
+
+      const hasContent = approved.size > 0 || Object.keys(uploads).length > 0 || totalExtras > 0;
+      document.getElementById('btn-download').disabled = !hasContent;
+    }
+
+    async function downloadPackage() {
+      const btn = document.getElementById('btn-download');
+      btn.textContent = '...מכינה חבילה';
+      btn.disabled = true;
+
+      const zip = new JSZip();
+
+      // Build manifest text
+      const date = new Date().toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
+      const lines = [
+        'AJI FRUIT FARM — PHOTO SELECTION REPORT',
+        'Date: ' + date,
+        '='.repeat(48),
+        ''
+      ];
+
+      // Approved
+      const approvedList = [...approved];
+      lines.push('APPROVED — keep current photo (' + approvedList.length + '):');
+      if (approvedList.length === 0) {
+        lines.push('  (none)');
+      } else {
+        approvedList.forEach(s => lines.push('  ✓ ' + s));
+      }
+      lines.push('');
+
+      // Replacements
+      const replKeys = Object.keys(uploads);
+      lines.push('REPLACEMENTS — new file replaces current (' + replKeys.length + '):');
+      if (replKeys.length === 0) {
+        lines.push('  (none)');
+      } else {
+        const replFolder = zip.folder('replacements');
+        for (const slot of replKeys) {
+          const { fileName, file } = uploads[slot];
+          const ext = fileName.includes('.') ? fileName.split('.').pop() : 'jpg';
+          const zipName = slot.replace('.jpg', '') + '--' + fileName;
+          lines.push('  ' + slot + '  →  replacements/' + zipName);
+          replFolder.file(zipName, await file.arrayBuffer());
+        }
+      }
+      lines.push('');
+
+      // Extras
+      const extraSlots = Object.entries(extras).filter(([, arr]) => arr.length > 0);
+      const totalExtras = extraSlots.reduce((s, [, arr]) => s + arr.length, 0);
+      lines.push('EXTRA PHOTOS — additional images for carousel (' + totalExtras + ' total):');
+      if (extraSlots.length === 0) {
+        lines.push('  (none)');
+      } else {
+        const extrasFolder = zip.folder('extras');
+        for (const [slot, items] of extraSlots) {
+          const slotFolder = extrasFolder.folder(slot.replace('.jpg', ''));
+          lines.push('  ' + slot + ' — ' + items.length + ' extra photo(s):');
+          for (let i = 0; i < items.length; i++) {
+            const { fileName, file } = items[i];
+            const zipName = (i + 1) + '--' + fileName;
+            lines.push('    extras/' + slot.replace('.jpg','') + '/' + zipName);
+            slotFolder.file(zipName, await file.arrayBuffer());
+          }
+        }
+      }
+      lines.push('');
+
+      // Not reviewed
+      const notReviewed = ALL_SLOTS.filter(s => !approved.has(s) && !uploads[s] && !(extras[s] && extras[s].length > 0));
+      lines.push('NOT REVIEWED (' + notReviewed.length + '):');
+      notReviewed.forEach(s => lines.push('  - ' + s));
+
+      zip.file('choices.txt', lines.join('\n'));
+
+      // Generate and trigger download
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url;
+      a.download = 'aji-farm-photo-selections.zip';
+      a.click();
+      URL.revokeObjectURL(url);
+
+      btn.textContent = '⬇ הורידי חבילה לשליחה';
+      btn.disabled = false;
     }
   </script>
 
