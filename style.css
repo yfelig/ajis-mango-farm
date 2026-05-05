@@ -301,6 +301,7 @@ section[id] { scroll-margin-top: 80px; }
   gap: 8px;
   height: clamp(260px, 38vw, 500px);
   margin-bottom: 20px;
+  overflow: hidden;
 }
 
 .teaser-main {
@@ -317,6 +318,8 @@ section[id] { scroll-margin-top: 80px; }
   display: grid;
   grid-template-rows: 1fr 1fr;
   gap: 8px;
+  height: 100%;
+  overflow: hidden;
 }
 .teaser-side img {
   width: 100%;
