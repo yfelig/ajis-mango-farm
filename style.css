@@ -121,6 +121,11 @@ p + p { margin-top: 16px; }
 .nav-links a:hover { color: #fff; }
 .nav.scrolled .nav-links a { color: var(--muted); }
 .nav.scrolled .nav-links a:hover { color: var(--text); }
+.nav.scrolled .nav-links a[aria-current="page"] {
+  color: var(--text);
+  border-bottom: 1px solid var(--text);
+  padding-bottom: 2px;
+}
 
 .nav-wa {
   display: flex;
@@ -324,11 +329,24 @@ section[id] { scroll-margin-top: 80px; }
 .cottage-teaser:hover .teaser-main img,
 .cottage-teaser:hover .teaser-side img { transform: scale(1.03); }
 
+.teaser-main::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(27, 56, 38, 0);
+  transition: background 0.35s ease;
+  pointer-events: none;
+}
+.cottage-teaser:hover .teaser-main::after {
+  background: rgba(27, 56, 38, 0.12);
+}
+.teaser-main { position: relative; }
+
 .teaser-cta {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
