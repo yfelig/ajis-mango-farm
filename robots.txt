@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aji-fruit-farm.lk/sitemap.xml
