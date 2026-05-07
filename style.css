@@ -86,45 +86,48 @@ p + p { margin-top: 16px; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* Thinner sticky bar — was 20px, dropped to 12px so the nav reads as
-     a fine line over the hero rather than a chunky banner. */
-  padding: 12px var(--side);
+  padding: 10px var(--side);
+  /* Visible from the very top — soft translucent cream over the hero,
+     intensifies on scroll. Two-layer feel: a faint blur for depth + a
+     hairline border so the bar always reads as a defined surface. */
+  background: rgba(240, 237, 228, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(27, 56, 38, 0.06);
   transition: background 0.3s, border-color 0.3s, padding 0.3s;
 }
 .nav.scrolled {
-  background: rgba(240, 237, 228, 0.96);
-  backdrop-filter: blur(10px);
+  background: rgba(240, 237, 228, 0.95);
   border-bottom: 1px solid var(--border);
-  padding: 10px var(--side);
+  padding: 9px var(--side);
 }
 
 .nav-logo {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #fff;
+  /* Dark logo from the start — we now have a cream backdrop in both
+     states, so the previous white text would disappear. */
+  color: var(--text);
   transition: color 0.3s;
 }
-.nav.scrolled .nav-logo { color: var(--text); }
 
 .nav-links {
   display: flex;
-  gap: 36px;
+  gap: 32px;
 }
 .nav-links a {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.8);
+  color: var(--muted);
   transition: color 0.2s;
 }
-.nav-links a:hover { color: #fff; }
-.nav.scrolled .nav-links a { color: var(--muted); }
-.nav.scrolled .nav-links a:hover { color: var(--text); }
-.nav.scrolled .nav-links a[aria-current="page"] {
+.nav-links a:hover { color: var(--text); }
+.nav-links a[aria-current="page"] {
   color: var(--text);
   border-bottom: 1px solid var(--text);
   padding-bottom: 2px;
