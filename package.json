@@ -1,0 +1,24 @@
+{
+  "name": "ajis-mango-farm",
+  "version": "1.0.0",
+  "description": "Static marketing site for Ajith's guesthouse on a fruit farm in Embilipitiya, Sri Lanka. Live at: **https://yfelig.github.io/ajis-mango-farm/**",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yfelig/ajis-mango-farm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/yfelig/ajis-mango-farm/issues"
+  },
+  "homepage": "https://github.com/yfelig/ajis-mango-farm#readme",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
+}

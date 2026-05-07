@@ -23,133 +23,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    /* STORY HERO */
-    .story-hero {
-      position: relative;
-      height: 85vh;
-      min-height: 520px;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-    }
-    .story-hero-img {
-      position: absolute;
-      inset: 0;
-    }
-    .story-hero-img img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
-    }
-    .story-hero-img::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        170deg,
-        rgba(0,0,0,0.05) 0%,
-        rgba(0,0,0,0.62) 100%
-      );
-    }
-    .story-hero-content {
-      position: relative; z-index: 1;
-      color: #fff;
-      padding: 0 var(--side) 72px;
-    }
-    .story-hero-content p {
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 14px;
-      max-width: none;
-    }
-    .story-hero-content h1 {
+    /* Pull-quote rendered inline inside the text column of split 2 */
+    .story-quote {
       font-family: var(--font-display);
-      font-size: clamp(3.5rem, 9vw, 7rem);
-      font-weight: 300;
-      line-height: 0.95;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    /* STORY BODY */
-    .story-body {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: var(--gap) var(--side);
-    }
-    .story-body .label { margin-bottom: 12px; }
-    .story-body h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      margin-bottom: 24px;
-    }
-    .story-body p {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--bg-dark);
+      border-left: 2px solid var(--bg-dark);
+      padding-left: 14px;
+      margin: 6px 0 14px;
+      line-height: 1.4;
       max-width: none;
-      font-size: 1.02rem;
-      line-height: 1.85;
-      margin-bottom: 20px;
     }
 
-    /* PULL QUOTE */
-    .pull-quote {
-      padding: var(--gap) var(--side);
-      text-align: center;
-      background: var(--bg-alt);
+    /* Story splits hold a long-form narrative — shrink type so the
+       full text fits inside one viewport without scrolling. */
+    .split-text p {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin-bottom: 10px;
     }
-    .pull-quote blockquote {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      max-width: 760px;
-      margin: 0 auto 20px;
-    }
-    .pull-quote cite { font-size: 0.82rem; }
-
-    /* PORTRAIT SPLIT */
-    .story-portrait {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 560px;
-    }
-    .story-portrait-image {
-      overflow: hidden;
-    }
-    .story-portrait-image img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
-    }
-    .story-portrait-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: var(--gap) var(--side);
-    }
-
-    /* STORY PHOTO STRIP */
-    .story-strip {
-      width: 100%;
-      height: 56vh;
-      min-height: 340px;
-      overflow: hidden;
-    }
-    .story-strip img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center 30%;
-      display: block;
-    }
-
-    /* BOOK CTA */
-    .book-cta {
-      padding: var(--gap) var(--side);
-      text-align: center;
-      background: var(--bg-dark);
-    }
-    .book-cta h2 { color: #fff; margin-bottom: 16px; }
-    .book-cta p { color: rgba(255,255,255,0.6); margin: 0 auto 40px; }
-    .book-cta .btn-wa { font-size: 1rem; padding: 18px 48px; }
-
-    @media (max-width: 860px) {
-      .story-portrait { grid-template-columns: 1fr; }
-      .story-portrait-image { aspect-ratio: 4/3; }
-    }
+    .split-text p + p { margin-top: 0; }
+    .split-text h2 { margin-bottom: 14px; }
+    .split-text { padding: 56px var(--side); }
   </style>
 </head>
 <body>
@@ -158,82 +54,46 @@
   <header class="nav scrolled">
     <a href="index.html" class="nav-logo">Aji Fruit Farm</a>
     <nav class="nav-links">
-      <a href="farm.html">The Farm</a>
-      <a href="rooms.html">The Room</a>
       <a href="story.html" aria-current="page">Our Story</a>
+      <a href="rooms.html">The Cottages</a>
+      <a href="farm.html">The Farm</a>
       <a href="index.html#contact">Find Us</a>
     </nav>
     <a class="nav-wa" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank">
-      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
       Book Direct
     </a>
   </header>
 
-  <!-- HERO -->
-  <section class="story-hero">
-    <div class="story-hero-img">
-      <img src="photos/aji.jpg" alt="Ajith at his farm" />
-    </div>
-    <div class="story-hero-content">
-      <p>Embilipitiya &nbsp;·&nbsp; Sri Lanka</p>
-      <h1>Our<br>Story</h1>
-    </div>
-  </section>
-
-  <!-- ACT I: ABROAD -->
-  <section class="story-body">
-    <span class="label">01 &mdash; The Beginning</span>
-    <h2>Six Years Away</h2>
-    <p>Ajith — Aji — left Sri Lanka when he was young. Six years working abroad, enough money saved to come home and do something with it.</p>
-    <p>In 2006 he bought fifteen acres in Embilipitiya. The land was empty. There was no orchard, no lake view, no plan except to grow something.</p>
-    <p>He started with papaya. Then pomegranate. He learned as he went — what the land wanted, which crops took, which ones didn't. He kept what worked and planted more of it.</p>
-  </section>
-
-  <!-- PORTRAIT SPLIT -->
-  <div class="story-portrait">
-    <div class="story-portrait-image">
-      <img src="photos/ajith-portrait.jpg" alt="Ajith at the farm he built" loading="lazy" />
-    </div>
-    <div class="story-portrait-text">
-      <span class="label">02 &mdash; The Farm</span>
-      <h2>Number One in Sri Lanka</h2>
+  <!-- 01 FROM ZERO TO THE TOP -->
+  <section class="split">
+    <div class="split-text">
+      <h2>From Zero<br>to the Top</h2>
+      <p>Ajith — Aji — left Sri Lanka when he was young. Six years working abroad, enough money saved to come home and do something with it.</p>
+      <p>In 2006 he bought fifteen acres in Embilipitiya. The land was empty. There was no orchard, no lake view, no plan except to grow something.</p>
+      <p>He started with papaya. Then pomegranate. He learned as he went — what the land wanted, which crops took, which ones didn't. He kept what worked and planted more of it.</p>
       <p>By 2018 the farm was formally ranked the top commercial fruit farm in the country. Fifteen acres, fully productive. Mango, coconut, banana, rambutan, star fruit, dragon fruit.</p>
-      <p>This was the goal, and it was done. Then 2020 arrived.</p>
+      <p><strong>This was the goal, and it was done.</strong> Then 2020 arrived.</p>
     </div>
-  </div>
-
-  <!-- ACT II: THE CRISIS -->
-  <section class="story-body">
-    <span class="label">03 &mdash; The Hard Years</span>
-    <h2>Everything Changed</h2>
-    <p>The pandemic hit. Then in 2021 the Sri Lankan government banned chemical fertilizers overnight — a decision later reversed, but not before it had already done the damage. Crops failed across the country. Aji's farm was no exception.</p>
-    <p>For a man who had spent fifteen years building something, it was a difficult few years. The commercial side of the farm took a serious hit. Something had to change.</p>
-    <p>He had been to Hikkaduwa. He had seen how those beach guesthouses worked — small, personal, run by the family, full of guests from all over the world. He liked the atmosphere. He wanted that, but in the country. In the orchard. By the lake.</p>
+    <div class="split-image">
+      <img src="photos/ajith-portrait.jpg" alt="Aji at the farm he built" loading="lazy" decoding="async" />
+    </div>
   </section>
 
-  <!-- FAMILY PHOTO STRIP -->
-  <div class="story-strip">
-    <img src="photos/family-path.jpg" alt="Ajith's family in the mango orchard" loading="lazy" />
-  </div>
-
-  <!-- PULL QUOTE -->
-  <div class="pull-quote">
-    <blockquote>"When guests come, they are happy. So I am also happy."</blockquote>
-    <cite>— Ajith</cite>
-  </div>
-
-  <!-- ACT III: THE COTTAGES -->
-  <section class="story-body">
-    <span class="label">04 &mdash; Now</span>
-    <h2>Four Cottages.<br>One Family.</h2>
-    <p>Aji opened the first cottages — four, each one set back in the trees at the edge of the lake. His wife cooks breakfast. His daughter helps. He handles everything else — the kayaks, the safari jeep bookings, the airport pickup if you need it.</p>
-    <p>He wants to keep it small. Four cottages is enough. The farm is still there — the fruit trees, the lake, the land he has tended for twenty years. The guests just get to live inside it for a few days.</p>
-    <p>Most people come for one night. Most stay longer.</p>
-  </section>
-
-  <!-- BRIDGE: Story → Rooms -->
-  <section class="story-body" style="padding-top: 0; padding-bottom: 48px; text-align: center;">
-    <a class="text-link" href="rooms.html" style="margin-top: 0;">See the rooms <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  <!-- 02 A DIFFERENT KIND OF PLACE -->
+  <section class="split split--reverse" style="min-height: auto;">
+    <div class="split-image">
+      <img src="photos/family-path.jpg" alt="Aji's wife and daughter in the orchard" loading="lazy" decoding="async" style="object-position: 60% center;" />
+    </div>
+    <div class="split-text">
+      <h2>A Different Kind<br>of Place</h2>
+      <p>Then came the pandemic. Crops failed across Sri Lanka, and Aji's farm was no exception. After fifteen years of building the farm by hand, something had to change.</p>
+      <p>Aji had seen the small guesthouses in Hikkaduwa — simple, personal, family-run places filled with travelers from around the world. He wanted to create something similar here, in the orchard, by the lake.</p>
+      <p>So he built four cottages hidden between the trees. His wife makes breakfast, their daughter helps, and Aji takes care of the rest — kayaks, safaris, and airport pickups.</p>
+      <p>He wants to keep it small, quiet, and peaceful.</p>
+      <p>The farm is still here — the fruit trees, the lake, and the land he has cared for for over twenty years. Most guests come for one night. Most stay longer.</p>
+      <p class="story-quote">"When guests come, they are happy. So I am also happy." — Ajith</p>
+      <a class="text-link" href="rooms.html">See the cottages <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
   </section>
 
   <!-- BOOK CTA -->
@@ -262,14 +122,10 @@
 
   <!-- FLOATING WHATSAPP -->
   <a class="wa-float" href="https://wa.me/94705065061?text=Hi%20Aji%2C%20I%20found%20your%20farm%20online%20and%20I%27d%20love%20to%20book%20a%20stay.%20Could%20you%20tell%20me%20about%20availability%3F" target="_blank" aria-label="Chat on WhatsApp">
+    <span class="wa-float-tooltip">I'm just a message away</span>
     <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.776a.5.5 0 0 0 .612.612l5.918-1.476A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.877 9.877 0 0 1-5.031-1.378l-.36-.214-3.732.931.949-3.461-.235-.376A9.855 9.855 0 0 1 2.1 12c0-5.468 4.432-9.9 9.9-9.9s9.9 4.432 9.9 9.9-4.432 9.9-9.9 9.9z"/></svg>
   </a>
 
-  <script>
-    const nav = document.querySelector('.nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 80);
-    }, { passive: true });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
