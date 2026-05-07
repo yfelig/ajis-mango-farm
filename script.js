@@ -42,7 +42,7 @@ const quotes = [
     author: '— Sarah & Felix, Germany'
   },
   {
-    text: '"We felt like <strong>part of the family from the first moment</strong>. Ajith takes care of his guests with so much dedication. The farewell was incredibly difficult — our heart definitely stayed there."',
+    text: '"<strong>We felt like part of the family from the first moment.</strong> Ajith takes care of his guests with so much dedication. The farewell was incredibly difficult — our heart definitely stayed there."',
     author: '— Katharina, Germany'
   },
   {
@@ -50,7 +50,7 @@ const quotes = [
     author: '— Pierre, France'
   },
   {
-    text: '"This is <strong>the best farm stay</strong>. A wonderful mango farm at the foot of the lake. The family is very kind and the food is delicious. <strong>I don\'t think there is any other place like this.</strong>"',
+    text: '"This is the best farm stay. A wonderful mango farm at the foot of the lake. The family is very kind and the food is delicious. <strong>I don\'t think there is any other place like this.</strong>"',
     author: '— Momoyo, Japan'
   },
   {
