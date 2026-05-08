@@ -187,7 +187,9 @@ p + p { margin-top: 16px; }
   z-index: 1;
   text-align: center;
   color: #fff;
-  padding: 0 24px 150px;
+  /* Smaller bottom padding pushes the whole text block lower in the
+     viewport, giving the photo more breathing room at the top. */
+  padding: 0 24px 70px;
 }
 
 .hero-label {
