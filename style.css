@@ -255,15 +255,19 @@ p + p { margin-top: 16px; }
   margin-top: 56px;
 }
 .hero-ctas .hero-cta { margin-top: 0; }
-.hero-cta--solid {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(255, 255, 255, 0.92);
-  color: var(--text);
+/* Solid pill — must come after the base .hero-cta in source order so
+   its color wins. Uses the forest-green ink for readable contrast on
+   the cream pill (instead of inheriting white-on-white). */
+a.hero-cta.hero-cta--solid {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.95);
+  color: var(--bg-dark);
   text-shadow: none;
 }
-.hero-cta--solid:hover {
+a.hero-cta.hero-cta--solid:hover {
   background: var(--bg);
   border-color: var(--bg);
+  color: var(--bg-dark);
 }
 
 .hero-scroll {
