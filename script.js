@@ -151,21 +151,51 @@ if (quoteText && quoteAuthor) {
 }
 
 // ─── IMAGE CAROUSELS ──────────────────────────────────────────────
+// Slide transition (not fade). Each slide is positioned absolutely with
+// its own transform — incoming slides come from the side and the active
+// one moves to the opposite side. The browser tweens; no strip jump.
 document.querySelectorAll('.image-slider').forEach((slider) => {
-  const slides  = slider.querySelectorAll('.slide');
+  const slides  = Array.from(slider.querySelectorAll('.slide'));
   const prev    = slider.querySelector('.slider-arrow--prev');
   const next    = slider.querySelector('.slider-arrow--next');
   const counter = slider.querySelector('.slider-counter');
   const total   = slides.length;
   let current = 0;
 
-  function show(n) {
-    slides[current].classList.remove('active');
-    current = (n + total) % total;
-    slides[current].classList.add('active');
+  function show(n, direction) {
+    const newIdx = (n + total) % total;
+    if (newIdx === current) return;
+    const oldSlide = slides[current];
+    const newSlide = slides[newIdx];
+    const dir = direction || 'next';
+
+    if (dir === 'prev') {
+      // Snap new slide onto the LEFT without animation, then animate to center.
+      newSlide.style.transition = 'none';
+      newSlide.classList.add('prev');
+      // Force reflow so the no-transition position takes effect before we
+      // restore transitions and trigger the animation.
+      void newSlide.offsetWidth;
+      newSlide.style.transition = '';
+      newSlide.classList.remove('prev');
+      newSlide.classList.add('active');
+      // Old slide drops .active and slides to its default position (right).
+      oldSlide.classList.remove('active', 'prev');
+    } else {
+      // Forward: new comes from default right position; old exits left.
+      oldSlide.classList.remove('active');
+      oldSlide.classList.add('prev');
+      newSlide.classList.remove('prev');
+      newSlide.classList.add('active');
+    }
+
+    current = newIdx;
     if (counter) counter.textContent = `${current + 1} / ${total}`;
   }
-  const api = { prev: () => show(current - 1), next: () => show(current + 1) };
+  const api = {
+    prev: () => show(current - 1, 'prev'),
+    next: () => show(current + 1, 'next')
+  };
 
   if (prev) prev.addEventListener('click', api.prev);
   if (next) next.addEventListener('click', api.next);

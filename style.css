@@ -824,9 +824,10 @@ cite {
   height: 100%;
 }
 
-/* IMAGE CAROUSEL — fade-based, used in any .split-image as a slider.
-   Same logic as the testimonial carousel — toggles .active on the
-   visible slide, no horizontal slide jump. */
+/* IMAGE CAROUSEL — horizontal slide transition. Each slide has its own
+   transform: incoming-from-right (default), at-center (.active), or
+   exited-left (.prev). The script flips classes, the browser tweens
+   transform — no strip translation, no wraparound jump. */
 .image-slider {
   position: relative;
   width: 100%;
@@ -841,13 +842,17 @@ cite {
 .image-slider .slide {
   position: absolute;
   inset: 0;
-  opacity: 0;
-  transition: opacity 0.6s ease;
+  transform: translateX(100%);
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
+  will-change: transform;
 }
 .image-slider .slide.active {
-  opacity: 1;
+  transform: translateX(0);
   pointer-events: auto;
+}
+.image-slider .slide.prev {
+  transform: translateX(-100%);
 }
 .image-slider .slide img {
   width: 100%;
