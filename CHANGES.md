@@ -4,6 +4,16 @@ Running log of changes both Yair and Rivka push to this repo. Newest on top.
 
 ---
 
+## 2026-05-08 (evening) — Setting hero swap to driftwood swing (Rivka)
+**By:** Rivka
+
+- **Setting section hero photo on index.html replaced with `lake-swing.jpg`** — close-up of a driftwood swing suspended over the lake from a wooden dock, leaves reflected in the water below, a single red leaf on the planks. Replaces `farm-branch-lake.jpg` (man sitting on a tree branch over the water). The swing photo is empty and contemplative; the section copy is "Mist on the water in the morning. Fireflies at night" — an empty, waiting image fits the mood better than a person mid-scene. Bonus: avoids any guest-consent questions if the man on the branch wasn't Aji.
+- `farm-branch-lake.jpg` is left in `photos/` for now in case we want it on a sub-page later.
+
+**Files:** `index.html`, `photos/lake-swing.jpg` (new, 177KB).
+
+---
+
 ## 2026-05-08 (evening) — date picker on rooms.html (Rivka)
 **By:** Rivka
 
