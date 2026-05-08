@@ -232,6 +232,40 @@ p + p { margin-top: 16px; }
   max-width: none;
 }
 
+/* Hero location — small SEO-charged subtitle below the tagline that
+   anchors the property to Udawalawe (the dominant search keyword) */
+.hero-location {
+  margin-top: 14px;
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.82);
+  text-shadow: 0 1px 10px rgba(0,0,0,0.55);
+  max-width: none;
+}
+
+.hero-ctas {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 56px;
+}
+.hero-ctas .hero-cta { margin-top: 0; }
+.hero-cta--solid {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  text-shadow: none;
+}
+.hero-cta--solid:hover {
+  background: var(--bg);
+  border-color: var(--bg);
+}
+
 .hero-scroll {
   position: absolute;
   bottom: 36px;
@@ -251,8 +285,8 @@ p + p { margin-top: 16px; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  /* H1 margin-bottom shrunk from 28→8 to bring tagline closer to title;
-     compensating here (+20) keeps the CTA in its original position. */
+  /* margin-top is overridden to 0 inside .hero-ctas; standalone (legacy)
+     keeps the original position. */
   margin-top: 56px;
   padding: 14px 32px;
   border: 1px solid rgba(255,255,255,0.6);
@@ -478,6 +512,12 @@ section[id] { scroll-margin-top: 80px; }
   font-size: 0.92rem;
   line-height: 1.6;
 }
+
+.itinerary-cta {
+  text-align: center;
+  margin-top: 36px;
+}
+.itinerary-cta .text-link { margin-top: 0; }
 
 @media (max-width: 860px) {
   /* On mobile the 3 days run horizontally as a swipeable strip — fits
