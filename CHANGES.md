@@ -4,6 +4,17 @@ Running log of changes both Yair and Rivka push to this repo. Newest on top.
 
 ---
 
+## 2026-05-08 (evening) — date picker on rooms.html (Rivka)
+**By:** Rivka
+
+- **`book-cta` on rooms.html replaced with the date picker** — same widget that lives in the home-page Find Us section, now also at the foot of rooms.html. Visitors who land on rooms.html via an Airbnb/Booking comparison link (i.e. half of all incoming traffic to a sub-page) used to see a static "+94 70 506 5061" pill; they now get the same arrival/nights/guests fields and a "Check with Aji" button that builds a tailored WhatsApp message (commitment trigger from Cialdini — the partial-form effect is one of the strongest conversion levers we have).
+- The picker JS (`script.js`) is unchanged — it gates on `getElementById('dp-arrival')` etc., so wiring up rooms.html happens automatically once the IDs exist on the page.
+- New CSS class `.book-picker` (and `.book-picker-inner`) — same dark surface as the old `.book-cta`, centered column wrapping the existing `.dp-*` widgets so styling stays in one place. The page still ends on the dark book-CTA aesthetic, just with an actionable form instead of a static pill.
+
+**Files:** `rooms.html`, `style.css`.
+
+---
+
 ## 2026-05-08 (evening) — pre-launch micro-polish (Rivka)
 **By:** Rivka
 
