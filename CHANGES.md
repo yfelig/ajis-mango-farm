@@ -4,6 +4,19 @@ Running log of changes both Yair and Rivka push to this repo. Newest on top.
 
 ---
 
+## 2026-05-08 (evening) — pre-launch micro-polish (Rivka)
+**By:** Rivka
+
+Three small, isolated finishes to close the loop before launch — no design risk, pure discoverability + clarity wins:
+
+- **Reviews carousel "X / 8" counter** — small muted line under the cite. Makes the 8 quotes discoverable; matches the visual rhythm of the image-slider counters elsewhere on the site (food, cottages, lake). Updates as the visitor clicks the arrows or pages through with arrow keys.
+- **`Built for Two` → `Four Cottages, Built for Two`** (rooms.html h2) — first thing on the page now answers "how many?" in the same breath as "for whom?". Two-line break preserves the editorial cadence.
+- **Itinerary swipe hint on mobile** — small "SWIPE THROUGH DAY 1 → 3" line under the h2 on screens ≤860px (where the days reflow into a horizontal scroll strip). Hidden on desktop (3-col grid is self-explanatory there). Closes the only remaining UX risk where a mobile visitor might see Day 1 and not realise Days 2/3 are off-screen to the right.
+
+**Files:** `index.html`, `rooms.html`, `script.js`, `style.css`.
+
+---
+
 ## 2026-05-08 (afternoon) — SEO copy pass + UX trims + photo optimisation (Rivka)
 **By:** Rivka
 

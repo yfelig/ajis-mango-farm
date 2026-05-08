@@ -463,6 +463,7 @@ section[id] { scroll-margin-top: 80px; }
 .itinerary-header { margin-bottom: 32px; }
 .itinerary-header .label { margin-bottom: 12px; }
 .itinerary-header h2 { margin-bottom: 0; }
+.itinerary-hint { display: none; }
 
 .itinerary-days {
   display: grid;
@@ -529,6 +530,17 @@ section[id] { scroll-margin-top: 80px; }
      instead of scrolling past three full-height cards. */
   .itinerary { padding: 48px 0; }
   .itinerary-header { padding: 0 var(--side); margin-bottom: 24px; }
+  .itinerary-hint {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
   .itinerary-days {
     grid-template-columns: none;
     grid-auto-flow: column;
@@ -711,6 +723,17 @@ cite {
 }
 
 .testimonial-dots { display: none; }
+
+.testimonial-counter {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  opacity: 0.75;
+}
 
 .dot {
   width: 8px;

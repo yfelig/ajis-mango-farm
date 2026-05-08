@@ -81,9 +81,10 @@ const quotes = [
   }
 ];
 
-const quoteText   = document.getElementById('quote-text');
-const quoteAuthor = document.getElementById('quote-author');
-const dots        = document.querySelectorAll('.dot');
+const quoteText    = document.getElementById('quote-text');
+const quoteAuthor  = document.getElementById('quote-author');
+const quoteCounter = document.getElementById('quote-counter');
+const dots         = document.querySelectorAll('.dot');
 
 // Carousel only exists on index.html — bail on other pages so this
 // shared script can be loaded everywhere without errors.
@@ -130,6 +131,7 @@ if (quoteText && quoteAuthor) {
     }, 350);
 
     dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    if (quoteCounter) quoteCounter.textContent = `${index + 1} / ${quotes.length}`;
     current = index;
   }
 
