@@ -1215,15 +1215,18 @@ cite {
 }
 
 /* ROOMS PRICE — anchor line above the "Built for Two" body copy so
-   the rate is visible the moment the cottages page loads. */
+   the rate is visible the moment the cottages page loads. Uses the
+   same gold-warm fact-line treatment as the homepage fact-lines for
+   site-wide consistency (price/included items always live in this
+   tone). */
 .rooms-price {
   font-family: var(--font-body);
   font-size: 0.74rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.14em;
+  font-weight: 500 !important;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--bg-dark) !important;
-  margin: 0 0 18px !important;
+  color: #b8842a !important;
+  margin: 0 0 22px !important;
   max-width: none !important;
 }
 
