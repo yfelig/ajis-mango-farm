@@ -612,6 +612,7 @@ section[id] { scroll-margin-top: 80px; }
 .itinerary-header .label { margin-bottom: 12px; }
 .itinerary-header h2 { margin-bottom: 0; }
 .itinerary-hint { display: none; }
+.explore-hint { display: none; }
 
 .itinerary-days {
   display: grid;
@@ -692,20 +693,22 @@ section[id] { scroll-margin-top: 80px; }
   .itinerary-days {
     grid-template-columns: none;
     grid-auto-flow: column;
-    grid-auto-columns: 86%;
-    gap: 12px;
+    grid-auto-columns: 100%;
+    gap: 0;
     max-width: none;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding: 0 var(--side) 4px;
+    /* No horizontal padding — strip spans full viewport so each card
+       hits 100% with no peek. Side padding applied to inner content. */
+    padding: 0 0 4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
   .itinerary-days::-webkit-scrollbar { display: none; }
-  .day { scroll-snap-align: start; }
+  .day { scroll-snap-align: start; padding: 0 var(--side); }
   /* 5/4 — almost square, less elongated than 4/5 portrait. Each day
      reads as a near-photo card without dominating the viewport. */
-  .day-img { aspect-ratio: 5/4; margin-bottom: 12px; }
+  .day-img { aspect-ratio: 5/4; margin-bottom: 12px; margin-left: calc(-1 * var(--side)); margin-right: calc(-1 * var(--side)); }
   .day h3 { font-size: 1.1rem; margin-bottom: 4px; }
   .day p { font-size: 0.88rem; }
 }
@@ -1521,6 +1524,12 @@ footer {
   .split--reverse .split-text { order: 1; }
   .split--reverse .split-image { order: 2; }
 
+  /* On mobile the welcome image follows the welcome H2 + copy (text
+     comes first, then photo). The cream-to-transparent mist on top of
+     the photo only made sense when the hero flowed directly into the
+     image — here it just looks like fog over the foliage, so kill it. */
+  #welcome .split-image::before { display: none; }
+
   /* Image sliders inherit the .split-image aspect ratio on mobile —
      full-bleed photo. Touch targets at 44px (Apple HIG min). */
   .slider-arrow { width: 44px; height: 44px; }
@@ -1538,19 +1547,37 @@ footer {
     min-height: auto;
   }
   .explore-header { padding: 0 var(--side); margin-bottom: 24px; }
+  .explore-hint {
+    display: block;
+    margin: 10px 0 0;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
   .activities {
     grid-template-columns: none;
     grid-auto-flow: column;
-    grid-auto-columns: 86%;
-    gap: 12px;
+    grid-auto-columns: 100%;
+    gap: 0;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding: 0 var(--side) 4px;
+    padding: 0 0 4px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
   .activities::-webkit-scrollbar { display: none; }
-  .activity { scroll-snap-align: start; }
+  .activity {
+    scroll-snap-align: start;
+    padding: 0 var(--side) 16px;
+  }
+  .activity-img {
+    margin-left: calc(-1 * var(--side));
+    margin-right: calc(-1 * var(--side));
+  }
 
   .contact-map { height: 320px; position: relative; }
   .contact-map iframe { position: static; height: 320px; }
