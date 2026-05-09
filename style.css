@@ -1652,28 +1652,33 @@ footer {
 
   /* Mobile hero copy: drop the kicker and the H1's second line, light
      up the italic tagline. Result: "AJI FRUIT FARM" alone on top,
-     italic tagline below — the reference layout. Centered both
-     horizontally and vertically (override the desktop bottom-left
-     composition for mobile only). */
+     italic tagline below — the reference layout. Title centered
+     horizontally, sits in the lower-middle of the photo (not the
+     dead center) so the path/foreground stays visible underneath. */
   .hero {
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
   }
   .hero-content {
     text-align: center;
-    padding: 0 var(--side);
+    /* Lower-third placement — content sits low on the photo, leaving
+       most of the frame for the landscape (matches the reference). */
+    padding: 0 var(--side) 10vh;
   }
   .hero-kicker { display: none; }
   .hero-h1-tail { display: none; }
   .hero-content h1 {
-    /* Bigger on mobile per reference — bumped from 8vw to 10vw, lands
-       at ~39px on iPhone 13 width. "AJI FRUIT FARM" still fits one line. */
-    font-size: clamp(2rem, 10vw, 4rem);
+    /* Cormorant 600 — has real presence, reads as bold-ish without
+       losing the editorial elegance of the serif. */
+    font-weight: 600;
+    font-size: clamp(2.1rem, 11vw, 4.4rem);
   }
   .hero-tagline {
     display: block;
     margin-top: 18px;
-    font-size: clamp(1.15rem, 5vw, 1.6rem);
+    /* Bumped again per reference — tagline visually ~half the H1
+       size so the pairing feels intentional, not like a subtitle. */
+    font-size: clamp(1.4rem, 6.5vw, 2rem);
   }
 
   /* Nav: Vivre-style trio — logo + burger sit together on the left,
