@@ -403,6 +403,20 @@ p + p { margin-top: 16px; }
   height: 100%;
   object-fit: cover;
   object-position: center;
+  /* Slow drone-pull-back on first paint — image starts ~18% closer
+     to camera and eases out to its natural frame over 11s. The pacing
+     curve is the same one we use for the nav transitions, so the
+     vibe stays consistent. forwards keeps the final scale locked in
+     after the animation ends. */
+  animation: hero-pullback 11s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+@keyframes hero-pullback {
+  from { transform: scale(1.18); }
+  to   { transform: scale(1); }
+}
+/* Respect users who opted out of motion. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-image img { animation: none; }
 }
 .hero-image::after {
   content: '';
@@ -1627,11 +1641,31 @@ footer {
   p { line-height: 1.65; font-size: 0.95rem; }
   h2 { margin-bottom: 18px; }
 
-  /* Nav: collapse to logo + hamburger only. Book Direct + page links
-     all live inside the full-screen overlay menu now. */
+  /* Hero — dvh on mobile so the image follows the visible viewport as
+     the Safari address bar collapses/expands during scroll. With static
+     svh the hero stays the small-state height even after the bar
+     retracts, which leaves a cream sliver below the photo. */
+  .hero { height: 100dvh; }
+
+  /* Nav: Vivre-style trio — logo + burger sit together on the left,
+     Book Direct pill anchors the right edge. The full-page links still
+     live inside the overlay (the page list is too long for inline),
+     but Book Direct gets a permanent, one-tap home in the bar so the
+     primary action is never more than a thumb away. */
   .nav-links { display: none; }
-  .nav-wa { display: none; }
-  .nav-burger { display: inline-flex; }
+  .nav-burger {
+    display: inline-flex;
+    order: 2;
+    margin-right: auto; /* pushes nav-wa to the right edge, keeps logo+burger together */
+  }
+  .nav-wa {
+    display: inline-flex;
+    order: 3;
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    gap: 5px;
+  }
+  .nav-wa svg { width: 14px; height: 14px; }
 
   /* Splits stack — let content drive height. The 100svh viewport rule
      would force every section to be a full screen TWICE (text + photo)
