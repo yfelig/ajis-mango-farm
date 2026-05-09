@@ -1685,25 +1685,14 @@ footer {
     font-size: clamp(1.4rem, 6.5vw, 2rem);
   }
 
-  /* Nav: Vivre-style trio — logo + burger sit together on the left,
-     Book Direct pill anchors the right edge. The full-page links still
-     live inside the overlay (the page list is too long for inline),
-     but Book Direct gets a permanent, one-tap home in the bar so the
-     primary action is never more than a thumb away. */
+  /* Nav: clean 2-item bar on mobile — logo left, hamburger right.
+     "AJI FRUIT FARM" is 3 words, the bar can't carry a third inline
+     element without feeling cluttered. Book Direct lives in the
+     overlay where it gets full editorial treatment instead of a
+     squeezed pill. */
   .nav-links { display: none; }
-  .nav-burger {
-    display: inline-flex;
-    order: 2;
-    margin-right: auto; /* pushes nav-wa to the right edge, keeps logo+burger together */
-  }
-  .nav-wa {
-    display: inline-flex;
-    order: 3;
-    font-size: 0.78rem;
-    padding: 4px 10px;
-    gap: 5px;
-  }
-  .nav-wa svg { width: 14px; height: 14px; }
+  .nav-wa { display: none; }
+  .nav-burger { display: inline-flex; }
 
   /* Splits stack — let content drive height. The 100svh viewport rule
      would force every section to be a full screen TWICE (text + photo)
