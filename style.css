@@ -610,11 +610,18 @@ section[id] { scroll-margin-top: 80px; }
 .split-image {
   position: relative;
   overflow: hidden;
+  /* Cream matting around the photo. The section stays 100svh, the image
+     fills the box only as far as it can without cropping; what's left
+     is cream that blends into the surrounding section. This is the
+     ONLY way to give "section = one full screen + image = full image,
+     never cropped" simultaneously when the photo aspect doesn't match
+     the box aspect. */
+  background: var(--bg);
 }
 .split-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.8s ease;
 }
 .split-image:hover img { transform: scale(1.03); }
@@ -1173,7 +1180,9 @@ cite {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #111;
+  /* Same cream matting as .split-image — sliders sit inside split-image
+     boxes, so they need to inherit the same "show whole photo" rule. */
+  background: var(--bg);
 }
 .image-slider .slides {
   position: absolute;
@@ -1197,7 +1206,7 @@ cite {
 .image-slider .slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 /* Disable parent .split-image hover-scale on slider images — it
    conflicts with the carousel transitions and causes jitter. */
