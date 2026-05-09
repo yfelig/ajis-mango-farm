@@ -479,6 +479,12 @@ p + p { margin-top: 16px; }
   text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55), 0 1px 10px rgba(0, 0, 0, 0.5);
 }
 
+/* Tagline is OFF on desktop (kicker + 2-line uppercase H1 carries the
+   composition there). The mobile breakpoint flips it on and hides the
+   kicker + the "Lake View Cottages" tail of the H1, producing the
+   editorial "AJI FRUIT FARM / italic tagline" pairing per Rivka's ref. */
+.hero-tagline { display: none; }
+
 .hero-tagline {
   font-family: var(--font-display);
   font-size: clamp(1.15rem, 2.2vw, 1.55rem);
@@ -1643,6 +1649,17 @@ footer {
      beneath, signaling "there's more here, scroll." dvh keeps the
      image anchored to the visible viewport as the address bar moves. */
   .hero { height: 75dvh; }
+
+  /* Mobile hero copy: drop the kicker and the H1's second line, light
+     up the italic tagline. Result: "AJI FRUIT FARM" alone on top,
+     italic tagline below — the reference layout. */
+  .hero-kicker { display: none; }
+  .hero-h1-tail { display: none; }
+  .hero-tagline {
+    display: block;
+    margin-top: 14px;
+    font-size: clamp(1rem, 4.4vw, 1.4rem);
+  }
 
   /* Nav: Vivre-style trio — logo + burger sit together on the left,
      Book Direct pill anchors the right edge. The full-page links still
