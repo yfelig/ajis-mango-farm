@@ -1652,13 +1652,28 @@ footer {
 
   /* Mobile hero copy: drop the kicker and the H1's second line, light
      up the italic tagline. Result: "AJI FRUIT FARM" alone on top,
-     italic tagline below — the reference layout. */
+     italic tagline below — the reference layout. Centered both
+     horizontally and vertically (override the desktop bottom-left
+     composition for mobile only). */
+  .hero {
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-content {
+    text-align: center;
+    padding: 0 var(--side);
+  }
   .hero-kicker { display: none; }
   .hero-h1-tail { display: none; }
+  .hero-content h1 {
+    /* Bigger on mobile per reference — bumped from 8vw to 10vw, lands
+       at ~39px on iPhone 13 width. "AJI FRUIT FARM" still fits one line. */
+    font-size: clamp(2rem, 10vw, 4rem);
+  }
   .hero-tagline {
     display: block;
-    margin-top: 14px;
-    font-size: clamp(1rem, 4.4vw, 1.4rem);
+    margin-top: 18px;
+    font-size: clamp(1.15rem, 5vw, 1.6rem);
   }
 
   /* Nav: Vivre-style trio — logo + burger sit together on the left,
@@ -1803,10 +1818,10 @@ footer {
   .cards { grid-template-columns: 1fr; }
 
   .hero-content h1 {
-    /* Tuned so "LAKE VIEW COTTAGES" fits on one line at 390px width —
-        previous 10.5vw forced a 3-line wrap (LAKE / VIEW / COTTAGES).
-       8vw lands at ~31px on iPhone 13 width, leaving room to spare. */
-    font-size: clamp(1.8rem, 8vw, 3.6rem);
+    /* "AJI FRUIT FARM" alone (the suffix is hidden on mobile) so we
+       can run bigger here — 11vw lands ~43px on iPhone 13 and still
+       fits the 14-char title on one line with the side gutter. */
+    font-size: clamp(2.1rem, 11vw, 4.4rem);
     letter-spacing: 0;
     line-height: 1.05;
   }
