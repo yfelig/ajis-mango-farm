@@ -49,6 +49,21 @@ body {
 }
 .label--light { color: rgba(255,255,255,0.5); }
 
+/* FACT LINE — small editorial info-line for distributing key details
+   (price, included items, discounts) into existing sections without
+   adding new chrome. Sits between .label and h2. */
+.fact-line {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b8842a;
+  margin: -8px 0 22px;
+}
+.fact-line--light { color: rgba(255,255,255,0.78); }
+
 /* HEADINGS */
 h2 {
   font-family: var(--font-display);
@@ -88,17 +103,38 @@ p + p { margin-top: 16px; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px var(--side);
-  /* Glassy and quiet — barely-there cream wash with strong blur so the
-     hero photo reads through. Hidden on scroll-down, revealed on
-     scroll-up (see script.js). */
+  padding: 8px var(--side);
+  /* Default (over content): compact cream-glass strip — kept thin so
+     it doesn't dominate the section it floats over. The taller, more
+     editorial padding lives only in the .over-hero override below.
+     Pure transparency too only when `.over-hero` is set (added by
+     script.js while scrollY < hero).
+     Hidden on scroll-down, revealed on scroll-up. */
   background: rgba(240, 237, 228, 0.42);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(27, 56, 38, 0.06);
   transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
-              opacity   0.45s ease;
+              opacity   0.45s ease,
+              background 0.35s ease,
+              backdrop-filter 0.35s ease,
+              border-color 0.35s ease,
+              padding 0.35s ease;
 }
+.nav.over-hero {
+  padding: 18px var(--side) 14px;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+/* Compact text in the cream-glass state so the thinner strip stays
+   balanced. The .over-hero state keeps the larger sizes set on the
+   base classes for the "main display" look. */
+.nav:not(.over-hero) .nav-logo { font-size: 1.15rem; }
+.nav:not(.over-hero) .nav-links a { font-size: 0.78rem; }
+.nav:not(.over-hero) .nav-wa { font-size: 0.92rem; padding: 4px 11px; }
+.nav:not(.over-hero) .nav-wa svg { width: 16px; height: 16px; }
 .nav.hidden {
   transform: translateY(-100%);
   opacity: 0;
@@ -107,50 +143,123 @@ p + p { margin-top: 16px; }
 
 .nav-logo {
   font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 500;
+  font-size: 1.4rem;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   /* Logo stays pure ink — anchors the bar; nav links sit in forest. */
   color: var(--text);
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
-  transition: color 0.3s;
+  transition: color 0.3s, text-shadow 0.5s ease;
+}
+/* Soft warm halo when the logo is pressed — fades in/out smoothly with
+   the text-shadow transition so the click feels acknowledged without
+   a sharp flash. Gold tone catches both default (dark green) and
+   over-hero (white) states. */
+.nav-logo:active {
+  text-shadow:
+    0 0 18px rgba(255, 215, 145, 0.85),
+    0 0 36px rgba(255, 215, 145, 0.4),
+    0 1px 2px rgba(255, 255, 255, 0.35);
 }
 
 .nav-links {
   display: flex;
-  gap: 32px;
+  gap: 36px;
 }
 .nav-links a {
-  font-size: 0.72rem;
-  font-weight: 600;
+  position: relative;
+  font-size: 0.92rem;
+  font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--bg-dark);
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
   transition: color 0.2s;
 }
-.nav-links a:hover { color: var(--text); }
-.nav-links a[aria-current="page"] {
-  color: var(--text);
-  border-bottom: 1px solid var(--text);
-  padding-bottom: 2px;
+/* Hover affordance: hairline slides in from the left under the link
+   on hover, retracts back left on mouse-out. currentColor so it
+   adapts to over-hero (white) vs default (dark green) automatically. */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  opacity: 0.85;
+}
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a:active { opacity: 0.7; }
+.nav-links a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+/* While the visitor is hovering anywhere inside the nav-links group,
+   suppress the current-page underline so only the hovered link shows
+   one. Prevents the "two highlighted at once" confusion when moving
+   from the current page to another link. */
+.nav-links:hover a[aria-current="page"]:not(:hover)::after {
+  transform: scaleX(0);
 }
 
 .nav-wa {
   display: inline-flex;
   align-items: center;
-  background: var(--bg-dark);
-  color: var(--bg);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 7px 16px;
-  border-radius: 999px;
-  transition: background 0.2s;
+  gap: 8px;
+  background: transparent;
+  color: var(--bg-dark);
+  /* Same size/weight/color as .nav-links a, but Title Case (Vivre
+     "Let's Talk" style) so the CTA stays part of the bar's family
+     while signaling its action. Tighter letter-spacing because mixed
+     case doesn't need wide tracking. */
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
+  padding: 5px 14px;
+  border: 1px solid var(--bg-dark);
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
 }
-.nav-wa:hover { background: #25543a; }
+.nav-wa svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.nav-wa:hover { background: var(--bg-dark); color: var(--bg); text-shadow: none; }
+.nav-wa:hover svg { transform: translate(2px, -2px); }
+.nav-wa:active { transform: scale(0.97); }
+
+/* OVER-HERO VARIANT — when the nav sits above the hero photo (toggled
+   by script.js based on scrollY < hero height), switch every link,
+   logo, and the CTA to a light cream so the text reads against the
+   foliage. Strong dark text-shadow gives a subtle halo that works on
+   bright AND dark patches of the photo. */
+.nav.over-hero .nav-logo,
+.nav.over-hero .nav-links a,
+.nav.over-hero .nav-wa {
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75),
+               0 0 3px rgba(0, 0, 0, 0.55),
+               0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.nav.over-hero .nav-links a:hover { color: #fff; }
+.nav.over-hero .nav-links a::after { background: #fff; }
+.nav.over-hero .nav-wa {
+  border-color: rgba(255, 255, 255, 0.85);
+}
+.nav.over-hero .nav-wa:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--bg-dark);
+  border-color: rgba(255, 255, 255, 0.95);
+  text-shadow: none;
+}
 
 /* HERO */
 .hero {
@@ -160,12 +269,13 @@ p + p { margin-top: 16px; }
   overflow: hidden;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hero-image {
   position: absolute;
   inset: 0;
+  overflow: hidden;
 }
 .hero-image img {
   width: 100%;
@@ -177,19 +287,51 @@ p + p { margin-top: 16px; }
   content: '';
   position: absolute;
   inset: 0;
-  /* Hero ends with a clean photo edge — the soft transition lives on
-     the photos that come AFTER the hero, not on the hero itself. */
-  background: linear-gradient(170deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.5) 100%);
+  /* Two-layer overlay: a diagonal vignette darkens the bottom-left
+     where kicker + H1 sit, then a soft 170deg wash adds the editorial
+     mood across the whole frame. Keeps text legible in every frame of
+     the slow zoom. */
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 14%),
+    linear-gradient(45deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 55%),
+    linear-gradient(170deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%);
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
-  text-align: center;
+  text-align: left;
   color: #fff;
-  /* Smaller bottom padding pushes the whole text block lower in the
-     viewport, giving the photo more breathing room at the top. */
-  padding: 0 24px 70px;
+  /* Vivre-style bottom-left composition. Padding reserves the editorial
+     bottom-left corner for the kicker + H1 stack while the photo holds
+     the rest of the viewport. */
+  padding: 0 var(--side) 80px;
+  max-width: 100%;
+}
+
+/* HERO KICKER — tiny uppercase line above the H1, with a hairline rule
+   extending to the right (Vivre's "DO IT DIFFERENTLY" pattern). The
+   single small typographic moment that frames the H1 below. */
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.7);
+  margin: 0 0 28px;
+  max-width: none;
+}
+.hero-kicker::after {
+  content: '';
+  display: inline-block;
+  width: 64px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.55);
 }
 
 .hero-label {
@@ -204,18 +346,16 @@ p + p { margin-top: 16px; }
 
 .hero-content h1 {
   font-family: var(--font-display);
-  /* One-line target: viewport scaling tuned so "AJI FRUIT FARM" lands on a
-     single row at typical desktop widths and gracefully scales down on
-     mobile. whitespace-nowrap forces the single line; overflow is hidden
-     by the hero so we can't break the layout if the viewport is unusually
-     narrow. */
-  font-size: clamp(2.6rem, 9vw, 8rem);
+  /* Uppercase to stay consistent with the rest of the site (every h2
+     is uppercase via the global rule). Refined editorial: light 300
+     weight + two-line composition keeps it delicate even in caps. */
+  font-size: clamp(2rem, 6.8vw, 5.8rem);
   font-weight: 300;
-  line-height: 0.95;
-  letter-spacing: 0.04em;
+  line-height: 1;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  margin-bottom: 8px;
-  white-space: nowrap;
+  margin: 0;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55), 0 1px 10px rgba(0, 0, 0, 0.5);
 }
 
 .hero-tagline {
@@ -272,12 +412,17 @@ a.hero-cta.hero-cta--solid:hover {
 
 .hero-scroll {
   position: absolute;
-  bottom: 36px;
+  bottom: 28px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
-  color: rgba(255,255,255,0.6);
-  animation: bounce 2s infinite;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 0.3s, transform 0.3s;
+}
+.hero-scroll svg { width: 28px; height: 28px; stroke-width: 1.4; }
+.hero-scroll:hover {
+  color: rgba(255, 255, 255, 0.95);
+  transform: translateX(-50%) translateY(3px);
 }
 @keyframes bounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
@@ -862,14 +1007,18 @@ cite {
 .btn-wa {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: var(--wa-green);
   color: #fff;
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   font-weight: 500;
-  padding: 10px 20px;
-  border-radius: 999px;
-  transition: opacity 0.2s;
+  /* Rectangular with rounded corners — matches the date-picker fields
+     above (border-radius: 6px, min-height: 40px) so the button reads
+     as the natural completion of the form, not a separate pill. */
+  padding: 10px 18px;
+  min-height: 40px;
+  border-radius: 6px;
+  transition: opacity 0.2s, background 0.2s;
 }
 .btn-wa:hover { opacity: 0.88; }
 
@@ -1015,19 +1164,54 @@ cite {
   margin: 4px auto 0 !important;
 }
 
-/* HERO PRICE — quiet badge below the hero CTA so the budget question
-   is answered before the visitor leaves the first screen. */
+/* HERO PRICE — anchor + supporting meta. The number is the anchor the
+   eye locks onto; "From" and "/night" frame it as a starting price; the
+   meta line answers the rest of the budget question quietly. */
 .hero-price {
-  margin-top: 18px;
-  margin-bottom: 0;
+  margin: 22px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+  max-width: none;
+}
+.hero-price-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;
+}
+.hero-price-from {
   font-family: var(--font-body);
-  font-size: 0.74rem;
+  font-size: 0.7rem;
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.78);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
-  max-width: none;
+}
+.hero-price-anchor {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.6vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.hero-price-unit {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.88);
+}
+.hero-price-meta {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* ROOMS PRICE — anchor line above the "Built for Two" body copy so
@@ -1086,7 +1270,7 @@ cite {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 18px;
   max-width: 460px;
 }
 
@@ -1130,7 +1314,7 @@ cite {
 }
 
 .dp-send {
-  margin-bottom: 10px;
+  margin-bottom: 18px;
   gap: 10px;
 }
 
@@ -1144,7 +1328,7 @@ cite {
   font-size: 0.82rem !important;
   line-height: 1.5 !important;
   margin: 0 0 8px !important;
-  max-width: 38ch;
+  max-width: none;
 }
 
 .dp-direct {
@@ -1402,13 +1586,11 @@ footer {
   .cards { grid-template-columns: 1fr; }
 
   .hero-content h1 {
-    /* Cap a bit lower so "AJI FRUIT FARM" never overflows on narrow
-       portrait phones. */
-    font-size: clamp(2.2rem, 11vw, 4.5rem);
+    /* Cap a bit lower for narrow portrait phones; let the H1 wrap
+       naturally if the title needs two lines. */
+    font-size: clamp(2.4rem, 12vw, 5rem);
     letter-spacing: 0;
-    white-space: nowrap;
   }
-  .hero-tagline { font-size: clamp(1rem, 4.5vw, 1.4rem); }
 
   /* Section labels + h2 a touch smaller for better mobile rhythm. */
   h2 { font-size: clamp(1.7rem, 6.5vw, 2.4rem); }

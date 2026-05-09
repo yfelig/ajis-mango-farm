@@ -14,6 +14,13 @@ function updateNav() {
   const heroH = hero ? hero.offsetHeight : 0;
   const inFog = heroH && y > heroH * 0.78 && y < heroH;
 
+  // While the nav sits above the hero photo, it carries a light-text
+  // variant (.over-hero) so the dark-green default doesn't get lost in
+  // the foliage. Threshold of 78% of hero height matches the fog zone
+  // where the photo darkens enough that light text reads even better.
+  const overHero = heroH && y < heroH * 0.78;
+  nav.classList.toggle('over-hero', overHero);
+
   if (inFog) {
     nav.classList.add('hidden');
   } else if (y < 60) {
@@ -27,6 +34,9 @@ function updateNav() {
   lastY = y;
   ticking = false;
 }
+// Initial paint — set the over-hero state on load so the first frame
+// renders with the right text color before any scroll event fires.
+updateNav();
 
 window.addEventListener('scroll', () => {
   if (!ticking) {
