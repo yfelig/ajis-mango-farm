@@ -1282,7 +1282,7 @@ cite {
    visitor who lands on rooms.html via Airbnb/Booking can start a tailored
    booking conversation without scrolling back to the home page. */
 .book-picker {
-  padding: 38px var(--side);
+  padding: 18px var(--side);
   text-align: center;
   background: var(--bg-dark);
 }
@@ -1308,12 +1308,12 @@ cite {
   text-align: center;
 }
 .book-picker .date-picker {
-  margin: 0 auto 12px;
+  margin: 0 auto 16px;
   width: 100%;
 }
 .book-picker .dp-note {
   text-align: center;
-  margin: 4px auto 0 !important;
+  margin: 0 auto !important;
 }
 
 /* HERO PRICE — anchor + supporting meta. The number is the anchor the
@@ -1469,14 +1469,15 @@ cite {
 }
 
 .dp-send {
-  margin-bottom: 18px;
-  gap: 10px;
+  margin-bottom: 16px;
+  gap: 8px;
+  padding: 9px 18px;
 }
-
-.dp-send-arrow {
-  transition: transform 0.2s ease;
+.dp-send svg {
+  width: 17px;
+  height: 17px;
+  transform: translateY(1px);
 }
-.dp-send:hover .dp-send-arrow { transform: translateX(3px); }
 
 .dp-note {
   color: rgba(255,255,255,0.55) !important;

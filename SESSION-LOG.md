@@ -4,6 +4,76 @@ Running log of work sessions. Newest entries on top. Used by `/wrap-session` and
 
 ---
 
+## 2026-05-09 (אחה"צ) — mobile QA continuation: hamburger overlay, peek restore, overlay-leak fix (Rivka + נתנאלה)
+
+### What we did
+
+המשך ישיר של פאס המובייל מהבוקר. רבק'לה צילמה את האתר על iPhone אמיתי וחזרה עם רשימה.
+
+**שלב 1 — 6 בעיות מובייל מהבוקר (הקודמות לתקציר):**
+1. כותרות נחתכות (Three Days at the Farm, From the Farm)
+2. גלילה ארוכה מדי
+3. תמונות לא במלוא הרוחב
+4. סקציות נחתכות
+5. ביקורות מכוערות
+6. חץ ה-hero מיותר במובייל
+
+**שלב 2 — צמצום ערפל:** ב-#welcome split-image במובייל, הסרתי את ה-`::before` של cream-mist gradient. ההיגיון: במובייל הטקסט קודם לתמונה (בניגוד לדסקטופ שם הם משולבים), אז הערפל הופך ל"fog over foliage" שלא מסביר כלום.
+
+**שלב 3 — ניווט מובייל (`af2860e`):** הסרגל העליון לא נתן דרך לעבור בין עמודים במובייל. הצעתי 4 דפוסים עם ASCII previews ב-AskUserQuestion; רבק'לה בחרה **Hamburger → full-screen overlay** (Vivre/Aēsop). יישום:
+- `nav-burger` SVG button (hidden דסקטופ, inline-flex במובייל)
+- `nav-overlay` fixed full-viewport, `rgba(245,242,233,0.98)` + `backdrop-filter: blur(20px)`, `opacity 0 → 1` עם `transform: translateY(-12px → 0)`
+- 4 לינקים ב-`Cormorant 2.25rem`, צבע זהב `#b8842a` ל-`aria-current="page"` עם underline ב-`scaleX(1)`
+- CTA "Book Direct" + arrow + meta line "Embilipitiya · Sri Lanka"
+- script.js: open/close + body scroll lock + Escape key + סגירה בלחיצה על לינק
+- HTML markup הוסף ל-4 העמודים (index, rooms, farm, story), עם `aria-current="page"` נכון לכל אחד
+
+**שלב 4 — צמצום רווחים:** רבק'לה ביקשה להדק עוד. ב-`@media (max-width: 560px)` הקטנתי: `.split-text` 28px, `.reviews` 32px, `.book-cta` 20px, `.contact-info` 24px, `.itinerary` + `.explore` 36px. גם `h2 margin-bottom: 12px`, `p line-height: 1.6`, `p+p margin-top: 10px`, `.label margin-bottom: 10px`, `.testimonial { min-height: 0 }`.
+
+**שלב 5 — peek אבוד (טעות שלי):** בקומיט `5d07a14` הפכתי את itinerary + activities ל-100% רוחב כדי לפתור "חיתוך משמאל". רבק'לה דחפה חזרה: "**זה היה טוב שראו שיש עוד תמונות. פשוט רציתי שזה לא יחתך משמאל**". ערך מוטעה.
+
+**שלב 6 — אסון חזותי (`f33669e`):** רבק'לה שלחה 3 צילומים: "אתר ממש נשבר לי". ה-overlay נופל לתוך זרימת העמוד — חץ ענק שחור מתחת ל-nav, "Book Direct" יוצא חתוך משמאל, וגם ה-Embilipitiya meta. כל זה ב-farm.html. אבחון: ה-HTML החדש (כולל `<div class="nav-overlay">`) הגיע לדפדפן של רבק'לה, אבל ה-CSS מ-cache ישן עוד לא מכיר את `.nav-overlay { position: fixed; opacity: 0; }`. תוצאה — overlay flow inline. הפתרונות:
+1. **`hidden` attribute ב-HTML של ה-overlay בכל 4 העמודים** — `<div class="nav-overlay" ... hidden>`. זה user-agent stylesheet (`display: none`), לא תלוי ב-CSS שלי, עוקף cache לחלוטין.
+2. **`.nav-overlay[hidden] { display: none !important }`** ב-CSS כ-belt-and-suspenders.
+3. **`script.js` updated:** `openOverlay()` עושה `overlay.hidden = false` ואז `requestAnimationFrame(() => overlay.classList.add('open'))` כדי שה-transition עדיין ירוץ. `closeOverlay()` שם setTimeout של 460ms שמחזיר `hidden = true` רק אחרי שה-transition נגמר.
+
+**שלב 7 — peek חזר עם תיקון נכון (`f33669e`):**
+- `.itinerary-days` ו-`.activities`: `grid-auto-columns: 88%`, `gap: 12px`
+- `padding: 0 var(--side) 4px` על ה-strip עצמו (לא על הכרטיסים)
+- `scroll-padding-inline: var(--side)` — הקריטי. אומר ל-snap engine שה"תחילת הויו" היא ב-side gutter, אז `scroll-snap-align: start` נוחת על gutter ולא על 0 הליטרלי. **זה מה שמנע את חיתוך השמאל**.
+- הסרתי את ה-negative margin trick מ-`.day-img` ו-`.activity-img` (לא היה צורך — הכרטיסים עכשיו 88%, הם ממילא לא צמודים לקצה).
+
+**שלב 8 — דיון על Lovable למובייל:** רבק'לה הציעה לחבר את ה-repo ל-Lovable. הסברתי שזה לא טוב — Lovable בנוי ל-React/Vite/Tailwind, האתר vanilla HTML, סיכון ל"המרה" שתשבור הכל. היא דחפה ("יש להם הרבה ניסיון, יש בילט-אין mobile preview"). עניתי: בסדר, אבל שני סייגים — שתשאל את Lovable במפורש "אתה תומך ב-vanilla HTML בלי המרה?", ושתעבוד על branch נפרד `lovable-mobile-redesign` כדי שה-main יישאר בטוח. **מחכים לתשובה ממנה.**
+
+### Where we are
+
+**Live:** `f33669e` ב-main, נדחף ל-Vercel. האתר במובייל אחרי השיפור: overlay תקין (לא נופל לעמוד), Three Days + From the Farm חוזרים ל-peek של 88% עם רווח, אין חיתוך משמאל. צילומי QA מקומיים אישרו ויזואלית. רבק'לה לא חזרה עדיין עם רענון מהמכשיר שלה.
+
+**ההחלטה הפתוחה:** האם לחבר את ה-repo ל-Lovable. רבק'לה רוצה לנסות, אני סייגתי בשני תנאים. ממתינה לתשובה.
+
+### Open threads
+
+- [ ] **רבק'לה תאמת על iPhone אמיתי** ש-`f33669e` פתר את הסיוט — pull-to-refresh חזק כדי למחוק cache, ואז לבדוק: (a) אין חץ ענק בעמודים farm/rooms/story; (b) המבורגר נפתח ונסגר חלק; (c) Three Days + From the Farm מציגים peek בלי חיתוך משמאל.
+- [ ] **Lovable decision:** אם בכל זאת רוצה לנסות — לפתוח branch `lovable-mobile-redesign` לפני החיבור. אם Lovable עונה "אנחנו ממירים ל-React" — לא לחבר.
+- [ ] **פאס UX visual של עמודי המשנה** (rooms.html, farm.html, story.html) עוד לא קרה — מהסשן של 2026-05-07. דחיתי כי המובייל היה עדיף.
+- [ ] **טיפוגרפיה של h2 ב-farm.html במובייל** — בצילום QA "FIFTEEN ACRES OF FRUIT" נראה דק וחלש מתחת ל-AJI FRUIT FARM של ה-nav. אולי ה-h2 mobile reduction אגרסיבית מדי שם. לבדוק שוב כשרבק'לה תחזור.
+- [ ] **תמונות לא ממוקמות:** `bathroom-exterior` (שזה למעשה lake-boat — mislabeled מהסשן הקודם). מחכה להחלטת מיקום.
+
+### Files touched
+
+- style.css — itinerary-days/activities חזרו ל-88% peek + scroll-padding-inline; הוסף `.nav-overlay[hidden]` safety; bunch of mobile spacing tightening; `#welcome .split-image::before { display: none }` במובייל; nav-burger + nav-overlay css block (~115 שורות) חדש
+- index.html, rooms.html, farm.html, story.html — nav-burger button + nav-overlay markup + `hidden` attribute על ה-overlay
+- script.js — openOverlay/closeOverlay עם hidden attribute toggle + requestAnimationFrame לטרנזישן
+
+### Git state
+
+- Branch: main
+- Uncommitted: none
+- Last commit: `f33669e` fix: stop overlay leak + restore swipe peek without left crop
+- Pushed: כן, ל-`yfelig/ajis-mango-farm` origin/main
+
+---
+
 ## 2026-05-09 — homepage micro-pass: tooltip, reviews jump, kayak photo, hover bug (Rivka + נתנאלה)
 
 ### What we did
