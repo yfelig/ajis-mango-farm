@@ -1959,8 +1959,8 @@ footer {
      feels unintentional. The icon alone is universally recognized. */
   .wa-float-tooltip { display: none; }
 
-  .contact-map { height: 320px; position: relative; }
-  .contact-map iframe { position: static; height: 320px; }
+  .contact-map { height: 260px; position: relative; }
+  .contact-map iframe { position: static; height: 260px; }
 
   /* Testimonial — keep arrows at 44px for fingertip targets, tighten
      the row gap so the quote still gets most of the width. */
@@ -1987,19 +1987,20 @@ footer {
 
   footer {
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
     text-align: center;
-    /* Extra bottom padding (90px) clears the floating WhatsApp button
-       (50px @ bottom: 20px → reaches y=70px) so the credit line is
-       always fully readable above it. */
-    padding: 18px var(--side) 90px;
+    /* Bottom padding clears the floating WhatsApp button
+       (44px @ bottom: 14px → reaches y=58px on mobile) so the credit
+       line stays fully readable above it. Top padding is tight so
+       the footer doesn't leave a cream chasm under the map. */
+    padding: 12px var(--side) 68px;
   }
   .footer-small { margin-right: 0; }
 
-  /* Floating WhatsApp — tiny lift so it never sits on top of the
-     fixed-iframe controls (Google Maps zoom buttons, etc). */
-  .wa-float { bottom: 20px; right: 20px; width: 50px; height: 50px; }
-  .wa-float svg { width: 24px; height: 24px; }
+  /* Floating WhatsApp — slightly smaller + lower on mobile so it
+     doesn't dominate, and so the footer can sit closer to the map. */
+  .wa-float { bottom: 14px; right: 14px; width: 44px; height: 44px; }
+  .wa-float svg { width: 22px; height: 22px; }
 }
 
 /* PHONE */
