@@ -116,14 +116,10 @@ p + p { margin-top: 16px; }
      Pure transparency too only when `.over-hero` is set (added by
      script.js while scrollY < hero).
      Hidden on scroll-down, revealed on scroll-up. */
-  /* Sage-tinted glass — same forest-green family as the brand's
-     --bg-dark, lifted to a soft mossy mid-tone so the bar reads
-     clearly on a phone (the old cream washed out against most
-     photos) while keeping the dark editorial text legible. */
-  background: rgba(168, 188, 162, 0.55);
+  background: rgba(240, 237, 228, 0.42);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(27, 56, 38, 0.14);
+  border-bottom: 1px solid rgba(27, 56, 38, 0.06);
   transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
               opacity   0.45s ease,
               background 0.35s ease,
@@ -1875,6 +1871,16 @@ footer {
   .nav-links { display: none; }
   .nav-wa { display: none; }
   .nav-burger { display: inline-flex; }
+
+  /* Mobile-only nav background: sage-tinted glass. Cream at 42% washed
+     out against most photos on a phone — sage at 55% reads as an
+     actual bar while keeping the dark editorial text legible. Desktop
+     keeps the original cream-glass (the wider screen + side gutters
+     give it enough definition without the tint). */
+  .nav:not(.over-hero) {
+    background: rgba(168, 188, 162, 0.55);
+    border-bottom-color: rgba(27, 56, 38, 0.14);
+  }
 
   /* Splits stack — let content drive height. The 100svh viewport rule
      would force every section to be a full screen TWICE (text + photo)
