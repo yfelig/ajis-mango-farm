@@ -61,17 +61,19 @@ function updateNav() {
   // ── over-hero state ──
   // Homepage: transparent while the user is on the hero photo
   //   (threshold = 78% of hero height, matches the fade-to-cream fog).
-  // Subpages: transparent ANY time a .split-image is currently
-  //   passing under the nav bar — so every section photo gets the
-  //   same airy treatment, not just the first one.
+  // Subpages: transparent ONLY while the first .split-image (the
+  //   page's visual hero) is under the nav. Once the user scrolls
+  //   into the body of the page, the nav switches to its sage glass
+  //   — even when the user passes over later section photos.
   let overHero = false;
   let inFog = false;
   if (isSubpage) {
-    const navY = (nav.offsetHeight || 60) * 0.5;
-    document.querySelectorAll('.split-image').forEach(el => {
-      const r = el.getBoundingClientRect();
-      if (r.top < navY && r.bottom > navY) overHero = true;
-    });
+    const firstImage = document.querySelector('.split:first-of-type .split-image');
+    if (firstImage) {
+      const navY = (nav.offsetHeight || 60) * 0.5;
+      const r = firstImage.getBoundingClientRect();
+      overHero = r.top < navY && r.bottom > navY;
+    }
   } else if (hero) {
     const heroH = hero.offsetHeight;
     inFog = y > heroH * 0.78 && y < heroH;
