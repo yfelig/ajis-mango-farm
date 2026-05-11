@@ -147,7 +147,7 @@ p + p { margin-top: 16px; }
 .nav:not(.at-top) .nav-logo { font-size: 1.15rem; }
 .nav:not(.at-top) .nav-links a { font-size: 0.78rem; }
 .nav:not(.at-top) .nav-wa { font-size: 0.92rem; padding: 4px 11px; }
-.nav:not(.at-top) .nav-wa svg { width: 16px; height: 16px; }
+.nav:not(.at-top) .nav-wa-arrow { width: 16px; height: 16px; }
 .nav.hidden {
   transform: translateY(-100%);
   opacity: 0;
@@ -249,12 +249,28 @@ p + p { margin-top: 16px; }
   box-shadow: 0 2px 12px rgba(27, 56, 38, 0.16);
   transition: background 0.2s, color 0.2s, box-shadow 0.25s, transform 0.2s;
 }
-.nav-wa svg {
+/* Arrow holder — stacks the two arrows in one slot so swapping them
+   on hover doesn't shift the pill's width. */
+.nav-wa-arrow {
+  position: relative;
+  display: inline-flex;
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
+.nav-wa-arrow svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+/* Default: ↗ (diagonal up-right) visible, → hidden. On hover this
+   inverts — the arrow rotates from "external link" feel to "go this
+   way" forward arrow, lifted slightly to the right. */
+.nav-wa-arrow .arrow-hover { opacity: 0; transform: translateX(-4px); }
+.nav-wa:hover .nav-wa-arrow .arrow-default { opacity: 0; transform: translateX(4px); }
+.nav-wa:hover .nav-wa-arrow .arrow-hover { opacity: 1; transform: translateX(0); }
 /* Hover: white fill with forest-dark text. The pill flips to a
    clean filled state — strong invitation to click without breaking
    palette (forest ink on cream is the page's own type pairing). */
@@ -266,7 +282,7 @@ p + p { margin-top: 16px; }
   box-shadow: 0 6px 22px rgba(27, 56, 38, 0.28);
   transform: translateY(-1px);
 }
-.nav-wa:hover svg { transform: translate(2px, -2px); }
+/* (arrow swap handled by .nav-wa-arrow rules above) */
 /* Active state: micro press to ground the lift. */
 .nav-wa:active { transform: translateY(0) scale(0.98); }
 
