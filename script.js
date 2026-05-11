@@ -68,11 +68,16 @@ function updateNav() {
   let overHero = false;
   let inFog = false;
   if (isSubpage) {
-    const firstImage = document.querySelector('.split:first-of-type .split-image');
+    // Find the first .split-image in document order (top-most photo
+    // on mobile after the order: 1 flip). Could be inside .split or
+    // .split--reverse — either way, it's the visual hero of the page.
+    const firstImage = document.querySelector('.split-image');
     if (firstImage) {
-      const navY = (nav.offsetHeight || 60) * 0.5;
+      // Stay transparent while ANY part of that first photo is still
+      // visible behind the nav. Once the bottom of the photo scrolls
+      // above ~30px (clears the nav area), flip to sage glass.
       const r = firstImage.getBoundingClientRect();
-      overHero = r.top < navY && r.bottom > navY;
+      overHero = r.bottom > 30;
     }
   } else if (hero) {
     const heroH = hero.offsetHeight;
