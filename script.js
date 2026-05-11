@@ -59,31 +59,28 @@ function updateNav() {
   const dy = y - lastY;
 
   // ── over-hero state ──
-  // Desktop homepage: transparent while on the hero photo (original).
-  // Desktop subpages: never transparent (split-image is half-width,
-  //   transparent over the cream text column reads as broken).
-  // Mobile (any page): transparent any time the hero OR any
-  //   .split-image is currently crossing the top of the viewport.
-  //   Photos are full-bleed on a phone so the bar can ride straight
-  //   on top of them; the moment the photo scrolls away the sage
-  //   glass returns.
+  // Behaviour matches the homepage everywhere: the page has ONE hero
+  // photo at the top — while the user is on it, the nav is
+  // transparent; as soon as they scroll past, the sage glass returns
+  // for the rest of the page.
+  //   - Homepage: hero = .hero
+  //   - Subpages on mobile: hero = first .split-image (full-bleed)
+  //   - Subpages on desktop: no over-hero (split-image is half-width,
+  //     transparent over the text column reads as broken)
   let overHero = false;
   let inFog = false;
   const isMobile = window.matchMedia('(max-width: 860px)').matches;
-  if (isMobile) {
-    const candidates = [hero, ...document.querySelectorAll('.split-image')].filter(Boolean);
-    for (const el of candidates) {
-      const r = el.getBoundingClientRect();
-      if (r.top < 30 && r.bottom > 30) { overHero = true; break; }
-    }
+  let heroEl = hero;
+  if (!heroEl && isSubpage && isMobile) {
+    heroEl = document.querySelector('.split-image');
+  }
+  if (heroEl) {
+    const r = heroEl.getBoundingClientRect();
+    overHero = r.bottom > 30 && r.top < window.innerHeight;
     if (hero) {
       const heroH = hero.offsetHeight;
       inFog = y > heroH * 0.78 && y < heroH;
     }
-  } else if (!isSubpage && hero) {
-    const heroH = hero.offsetHeight;
-    inFog = y > heroH * 0.78 && y < heroH;
-    overHero = y < heroH * 0.78;
   }
   nav.classList.toggle('over-hero', overHero);
 
