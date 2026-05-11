@@ -1990,13 +1990,19 @@ footer {
     flex-direction: column;
     gap: 6px;
     text-align: center;
-    /* Bottom padding clears the floating WhatsApp button
-       (44px @ bottom: 14px → reaches y=58px on mobile) so the credit
-       line stays fully readable above it. Top padding is tight so
-       the footer doesn't leave a cream chasm under the map. */
-    padding: 12px var(--side) 68px;
+    /* Tight bottom padding — the WA button doesn't overlap because
+       .footer-small is width-capped + center-aligned, leaving a
+       column at the right edge clear for the float. */
+    padding: 12px var(--side) 28px;
   }
-  .footer-small { margin-right: 0; }
+  .footer-small {
+    margin-right: 0;
+    /* Cap the credit line's width so it wraps in the center column
+       and never reaches the right edge where the WhatsApp float
+       lives. Wraps to 2-3 lines depending on viewport, no overlap. */
+    max-width: 240px;
+    align-self: center;
+  }
 
   /* Floating WhatsApp — slightly smaller + lower on mobile so it
      doesn't dominate, and so the footer can sit closer to the map. */
