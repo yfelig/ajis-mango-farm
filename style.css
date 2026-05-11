@@ -989,10 +989,11 @@ section[id] { scroll-margin-top: 80px; }
   .itinerary-days {
     grid-template-columns: none;
     grid-auto-flow: column;
-    /* 88% leaves a sliver of the next card visible — visitors see there
-       are more days to swipe through. */
-    grid-auto-columns: 88%;
-    gap: 12px;
+    /* 80% width + 18px gap: each card is a touch narrower than before
+       so the gap between them breathes, and the next-card peek is a
+       cleaner ~15% sliver instead of a thin slice. */
+    grid-auto-columns: 80%;
+    gap: 18px;
     max-width: none;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -1941,9 +1942,9 @@ footer {
   .activities {
     grid-template-columns: none;
     grid-auto-flow: column;
-    /* Same peek pattern as itinerary — sliver of next card hints at more. */
-    grid-auto-columns: 88%;
-    gap: 12px;
+    /* Same 80% / 18px rhythm as the itinerary strip. */
+    grid-auto-columns: 80%;
+    gap: 18px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding: 0 var(--side) 4px;
