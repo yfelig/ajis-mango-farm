@@ -50,29 +50,24 @@ body {
 .label--light { color: rgba(255,255,255,0.5); }
 
 /* FACT LINE — small editorial info-line for distributing key details
-   (price, included items, discounts) into existing sections without
-   adding new chrome. Sits between .label and h2. */
+   (price, included items, discounts). One uniform size site-wide so all
+   gold captions read as the same voice regardless of position. */
 .fact-line {
   display: block;
   font-family: var(--font-body);
-  font-size: 0.74rem;
+  font-size: 0.88rem;
   font-weight: 500;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #b8842a;
   margin: -8px 0 22px;
 }
 .fact-line--light { color: rgba(255,255,255,0.78); }
 
-/* Variant for when fact-line sits BELOW the heading. Negative margin-top
-   overlaps the H2's 24px bottom margin so the caption reads as attached
-   to the title, not floating between two blocks. Bumped font + tighter
-   tracking so it doesn't read as weaker than the body paragraph below. */
-.fact-line--below {
-  font-size: 0.88rem;
-  letter-spacing: 0.14em;
-  margin: -14px 0 26px;
-}
+/* Position modifier — when the caption sits BELOW the heading instead
+   of above. Negative margin-top overlaps H2's 24px bottom margin so the
+   caption reads as attached to the title, not floating between blocks. */
+.fact-line--below { margin: -14px 0 26px; }
 
 /* HEADINGS — subpages promote their first .split h2 to h1 for SEO/a11y
    (one h1 per page); same visual treatment so the editorial rhythm holds. */
@@ -653,6 +648,28 @@ section[id] { scroll-margin-top: 80px; }
   margin: 0;
   max-width: none;
 }
+
+/* FEATURES LIST — 2-column compact list of amenities inside a split-text
+   column (used by WHAT'S INCLUDED on rooms.html). Mobile collapses to
+   single-column further down in the @media block. */
+.features-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 22px;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+.features-list li {
+  font-size: 0.95rem;
+  color: var(--muted);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.features-list li span:first-child { flex-shrink: 0; font-size: 1.15rem; }
 
 .split-image {
   position: relative;
@@ -1408,16 +1425,7 @@ cite {
    same gold-warm fact-line treatment as the homepage fact-lines for
    site-wide consistency (price/included items always live in this
    tone). */
-.rooms-price {
-  font-family: var(--font-body);
-  font-size: 0.88rem !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #b8842a !important;
-  margin: 0 0 26px !important;
-  max-width: none !important;
-}
+/* .rooms-price removed — replaced by unified .fact-line.fact-line--below */
 
 /* GETTING HERE — practical distances inside the dark contact info
    column. Compact list with hairline dividers, no bullets. */
@@ -1582,13 +1590,7 @@ cite {
   padding-left: 20px;
 }
 
-/* Larger pull-quote variant — used on the long-form story page where
-   the surrounding paragraphs are dense and the base size feels lost. */
-.host-quote--lg {
-  font-size: clamp(1.7rem, 2.5vw, 2.25rem);
-  margin-top: 32px;
-  padding-left: 24px;
-}
+/* .host-quote--lg removed — site-wide pull-quote uniformity */
 
 /* FOOTER */
 footer {
@@ -1694,6 +1696,9 @@ footer {
   /* Tighten body rhythm on mobile — long scroll feels short. */
   p { line-height: 1.65; font-size: 0.95rem; }
   h1, h2 { margin-bottom: 18px; }
+
+  /* Features list collapses to single column when the split stacks. */
+  .features-list { grid-template-columns: 1fr; }
 
   /* Hero — Vivre-style on mobile: the photo doesn't claim the full
      viewport, it takes ~75% so the start of the body section peeks in

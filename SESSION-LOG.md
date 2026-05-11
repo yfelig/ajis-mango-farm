@@ -4,6 +4,113 @@ Running log of work sessions. Newest entries on top. Used by `/wrap-session` and
 
 ---
 
+## 2026-05-10 — editorial polish + design-system unification + photo curation (Rivka + נתנאלה)
+
+### What we did
+
+סשן ארוך ועמוס. נכנס דרך `/המשך-פרויקט` — הלוג היה 41 commits מאחור (drift). זרמנו ישר לעבודה לפי בקשות נקודתיות של רבק'לה, ובהמשך עברנו לפאס design-audit מקיף.
+
+**שלב 1 — WHAT'S INCLUDED ב-rooms.html:**
+- הסרנו את bath-6 (sapling בבטון, slot 12)
+- שינוי layout: ניסיתי "bookend" (כותרת למעלה, signature למטה עם hairline+italic). רבק'לה דחתה כי כל שאר ה-`.split-text` באתר ממורכזים אנכית — וזה שבר את הקצב. נשמר memory: `feedback_aji_split_centered_text.md` (לא לשבור את ה-vertical centering).
+- עברנו ל-signature INSIDE the centered block — כותרת + רשימה + hairline + שורה איטלית "Every cottage. Every stay. Same care.", הכל ממורכז יחד.
+- פעולות נוספות בסליידר: bath-4 קיבל `object-position: center top` ואז `center 35%`; הוסרו cottage-3, cottage-6, bath-clean; הוסר cottage-7333 שהוספנו ובסוף הוחלף ב-cottage-7674.
+- bath-tree.jpg נוצר חדש: רבק'לה שלחה Gemini-generated של אותה מקלחת עם sparkle בפינה. cropped 8.5% מהתחתית (87px) באמצעות sharp בקוד inline → JPG 191KB + WebP 104KB. הסימן נחתך פיזית מהקובץ, לא תלוי ב-CSS.
+
+**שלב 2 — ציטוטים:**
+- בסקציית "THE SETTING" (index): הסרנו `<cite>— Ronald & Anni, Germany</cite>` (filler). הציטוט הוגדל מ-1.05rem ל-clamp(1.25rem, 1.7vw, 1.55rem).
+- בסקציית "MEET AJI" (index): `.host-quote` הוגדל מ-1.22rem ל-clamp(1.4rem, 1.9vw, 1.75rem).
+- ב-story.html ציטוט "When guests come": class הוחלף מ-`story-quote` (לא הוגדר ב-CSS, ירש default קטן) ל-`host-quote`. כשגם זה נראה קטן יחסית לפסקאות הארוכות, נוצר `host-quote--lg` עם clamp(1.7rem, 2.5vw, 2.25rem). בסוף הסשן רבק'לה זיהתה שהוא חורג מהאחידות — הוחזר ל-`host-quote` רגיל ו-`--lg` נמחק.
+
+**שלב 3 — Cache buster:**
+זוהתה בעיה כרונית: השינויים ב-CSS לא נראים כי `?v=N` לא בומפ. הועלה ל-v=10 על כל 4 העמודים בסוף הסשן.
+
+**שלב 4 — תמונות חדשות:**
+- aji-mobile.png נוסף ל-MEET AJI עם `<source media="(max-width: 860px)">` כך שמובייל מקבל תמונה אחרת. **נשאר 2.3MB** — צריך אופטימיזציה.
+- 5 תמונות לסקציית "FIFTEEN ACRES OF FRUIT" ב-farm.html: NW6A7293/7215/7217/7245/7272 → farm-7XXX.jpg + .webp (~1920px width, JPG q78 mozjpeg, WebP q70). הסליידר עבר מ-6 → 11.
+- cottage-7333 (חיצוני, על עמודים) הוסף ואחרי שראינו לא הסתדר — הוסר.
+- cottage-7674 (חדר שינה דרך דלתות פתוחות) הוסף בסוף לסליידר BUILT FOR TWO — slot 9.
+
+**שלב 5 — שינויים מבניים בעמוד הבית:**
+- COTTAGES section: הזהוב "From $50 per night" עבר מתחת לכותרת + class חדש `.fact-line--below`.
+- FOOD section: הזהוב "Breakfast included with every stay" עבר מתחת לכותרת באותו דפוס. בכותרת ה-`<br>` הוחלף ב-`&nbsp;` כדי ש"Food, Every Day." יישאר על שורה אחת.
+
+**שלב 6 — תיקוני מיקום תמונות:**
+- cottage-lounge ב-rooms BUILT FOR TWO slot 1: ניסיתי 70% (לכיוון הלא נכון), הוחלף ל-30% center → הכיסא הקדמי נחשף.
+- bath-4 ב-WHAT'S INCLUDED: התחלנו ב-default → center top → center 35% (השמיים נשארים אבל גם רואים את העץ).
+
+**שלב 7 — דחיפה לאתר:**
+Commit `31ebb1c editorial polish: gold below H2, larger pull-quotes, gallery trims, mobile aji` נדחף בערב. כולל: gold below H2 ב-COTTAGES+FOOD, host-quote+micro-quote+rooms-price הוגדלו, host-quote--lg ב-story (זמני, נמחק אחר כך), Ronald cite הוסר, bath-6+bath-clean+cottage-3+cottage-6 הוסרו מ-WHAT'S INCLUDED, bath-tree נוסף, bath-4 ב-center 35%, cottage-lounge ב-30%, mobile aji photo, FOOD title &nbsp;, signature ב-WHAT'S INCLUDED, v=8 בכל העמודים.
+
+**שלב 8 — Design-system audit (אחרי הדחיפה):**
+רבק'לה ביקשה אחידות מלאה כעיניים של מעצבת. בוצע audit מסודר עם TaskCreate:
+1. **Labels בעמודים פנימיים** — נוספו 6 labels: rooms (`01 — THE COTTAGE`, `02 — IN EVERY COTTAGE`), farm (`01 — THE ORCHARD`, `02 — THE LAKE`), story (`01 — THE BEGINNING`, `02 — TODAY`). לפני זה רק index היה עם labels.
+2. **`.pull-quote` נכנס למשפחת ה-quote** — בסקציית BUILT FOR TWO ב-rooms הציטוט הארוך הוחלף מ-`.pull-quote` (1.05rem קבוע, צבע ירוק יער) ל-`.host-quote` (clamp רספונסיבי, צבע טקסט). הצבע השונה הוסר.
+3. **CTA חדש לסקציית FOOD** ב-index: `Plan your stay → #contact` (מתאים לפאטרן של שאר הסקציות).
+4. **`.fact-line` מאוחד** — הגודל הבסיסי הועלה מ-0.74rem ל-0.88rem. ה-FIND US fact-line--light אוטומטית קיבל את הגודל. `.fact-line--below` הוקטן ל-modifier של מרווח בלבד.
+5. **`.rooms-price` בוטלה** — הוחלפה ב-`.fact-line.fact-line--below` הסטנדרטי ב-rooms.html סקציה 1.
+6. **`<style>` inline blocks הוסרו** מ-rooms.html ו-farm.html (היו עם duplicates של `.features-list` ו-`.pull-quote`). הכללים עברו ל-style.css. מקור אחד של אמת.
+7. **`.host-quote--lg` נמחק** — נחזרנו לאחידות.
+
+### Where we are
+
+**Live:** commit `31ebb1c` ב-Vercel (פאס editorial polish + mobile aji + gallery trims).
+**מקומי לא pushed:** השינויים של ה-design-audit (Labels בעמודים פנימיים, ציטוטים מאוחדים, CTA לFOOD, fact-line מאוחד, rooms-price בוטלה, inline styles הוסרו, host-quote--lg הוסר) + 5 תמונות farm-7XXX + cottage-7674.
+
+**5 קבצי HTML/CSS modified ו-12 photos untracked.** Cache buster ב-v=10 בכל העמודים.
+
+### Open threads
+
+- [ ] **Push החדש לאתר** — כל ה-design-audit עוד מקומי. רבק'לה ביקשה לדחוף בסוף שלב 7, אבל אז נכנס שלב 8 (design-audit + תמונות חדשות) שעדיין מקומי. צריך commit + push.
+- [ ] **`aji-mobile.png` שוקלת 2.3MB** — חייבת להמיר ל-WebP/JPG (~200-400KB) לפני שהיא מאטה את המובייל בצורה משמעותית. הפלאג: pushed ל-live כך, ועלולה להיות חוויה גרועה ב-4G.
+- [ ] **2 תמונות יתומות בתיקיית photos/** — `cottage-7333.jpg` + `cottage-7333.webp` לא בשימוש כרגע (רבק'לה הסירה את התמונה אחרי שהוספתי). אפשר למחוק את הקבצים.
+- [ ] **בדיקה ויזואלית של החלפות בעמודים פנימיים** — רבק'לה לא וידאה אחרי הוספת ה-labels (`01 — THE COTTAGE` וכו'). הניסוחים יכולים להשתנות אם משהו לא יושב לה.
+- [ ] **בדיקה של הציטוט ב-story.html אחרי החזרה ל-host-quote** — היא ראתה שהוא חורג בגדול, החזרנו לרגיל. צריך אישור שגודלו עכשיו תקין מול הפסקאות הארוכות.
+- [ ] **WebP > JPG לתמונות farm-7XXX** — לפני אופטימיזציה ב-quality 70 ה-WebP יצא גדול מ-JPG (4 מתוך 5). תוקן ל-q70 ועכשיו קטן יותר. אבל worth להסתכל באתר אם איכות מספיקה.
+- [ ] **מ-2026-05-09 (אחה"צ) שעוד לא קרה:** פאס UX visual של עמודי המשנה (rooms.html, farm.html, story.html) — חלק מזה נעשה בסשן הזה אבל לא הכל. במיוחד story.html שעוברת מעבר אחרי גודל ציטוט.
+- [ ] **AjiFruit SEO** — לא נגענו (memory ישן).
+
+### Files touched
+
+**HTML:**
+- `index.html` — bumped v=10, FOOD CTA נוסף, Ronald cite הוסר, .fact-line--below ב-COTTAGES+FOOD, FOOD title &nbsp;, mobile aji photo (`<source media="(max-width: 860px)">`)
+- `rooms.html` — bumped v=10, label `01 — THE COTTAGE` ב-section 1, label `02 — IN EVERY COTTAGE` ב-section 2, .rooms-price → .fact-line.fact-line--below, .pull-quote → .host-quote, inline `<style>` הוסר, BUILT FOR TWO slot 1 cottage-lounge קיבל `object-position: 30% center`, slot 9 cottage-7674 נוסף, WHAT'S INCLUDED גודר מ-12 → 9 (הסרת bath-6, bath-clean, cottage-3, cottage-6) + bath-tree נוסף, bath-4 קיבל `object-position: center 35%`, signature נוסף + counter עודכן
+- `farm.html` — bumped v=10, label `01 — THE ORCHARD` + `02 — THE LAKE`, inline `<style>` הוסר, FIFTEEN ACRES גודל מ-6 → 11 (5 farm-7XXX נוספו)
+- `story.html` — bumped v=10, label `01 — THE BEGINNING` + `02 — TODAY`, .story-quote → .host-quote (לא --lg)
+
+**CSS (style.css):**
+- `.fact-line` בסיס: 0.74rem → 0.88rem, ls 0.16em → 0.14em
+- `.fact-line--below` עכשיו רק `margin: -14px 0 26px` (size מועבר מהבסיס)
+- `.host-quote` הוגדל ל-clamp(1.4rem, 1.9vw, 1.75rem), נוסף line-height: 1.4
+- `.micro-quote p` הוגדל ל-clamp(1.25rem, 1.7vw, 1.55rem)
+- `.host-quote--lg` נמחק
+- `.rooms-price` נמחק
+- `.split-signature` + `.split-signature-rule` + `.split-signature p` נוספו
+- `.features-list` (base) נוסף ל-style.css
+- `@media (max-width: 860px) .features-list { grid-template-columns: 1fr; }` נוסף
+
+**תמונות חדשות בעיבוד sharp:**
+- `photos/aji-mobile.png` (2.3MB — צריך אופטימיזציה)
+- `photos/bath-tree.jpg` (191KB) + `.webp` (104KB) — Gemini-cleaned, sparkle cropped 8.5%
+- `photos/cottage-7333.jpg` + `.webp` — orphaned, רבק'לה הסירה
+- `photos/cottage-7674.jpg` (241KB) + `.webp` (124KB)
+- `photos/farm-7215.{jpg,webp}` 620/597KB
+- `photos/farm-7217.{jpg,webp}` 628/609KB
+- `photos/farm-7245.{jpg,webp}` 426/340KB
+- `photos/farm-7293.{jpg,webp}` 555/522KB
+- `photos/farm-7272.{jpg,webp}` 603/577KB
+
+**Memory חדש:**
+- `~/.claude/projects/C--Users-Yair-Felig--claude/memory/feedback_aji_split_centered_text.md` — לא לשבור vertical centering ב-.split-text (4 reverts מ-05-09 + 1 מ-05-10)
+
+### Git state
+
+- Branch: `main`
+- Uncommitted: 5 modified (farm.html, index.html, rooms.html, story.html, style.css) + 14 untracked photos (cottage-7333 jpg+webp orphaned, cottage-7674 jpg+webp, farm-72{15,17,45,72,93} jpg+webp)
+- Last commit on origin: `31ebb1c editorial polish: gold below H2, larger pull-quotes, gallery trims, mobile aji`
+
+---
+
 ## 2026-05-09 (אחה"צ) — mobile QA continuation: hamburger overlay, peek restore, overlay-leak fix (Rivka + נתנאלה)
 
 ### What we did
