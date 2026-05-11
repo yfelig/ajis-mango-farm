@@ -266,102 +266,206 @@ p + p { margin-top: 16px; }
    removes [hidden] before adding .open, so the transition still runs. */
 .nav-overlay[hidden] { display: none !important; }
 
+/* Editorial photo-overlay menu — Vivre-style.
+   Photo background with dark wash + numbered Cormorant links staggered in. */
 .nav-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: rgba(245, 242, 233, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 80px var(--side) 40px;
+  overflow: hidden;
+  color: #fff;
+  display: block;
   opacity: 0;
-  transform: translateY(-12px);
   pointer-events: none;
-  transition: opacity 0.42s ease, transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
   visibility: hidden;
+  transition: opacity 0.46s ease-out, visibility 0s linear 0.46s;
 }
 .nav-overlay.open {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
   visibility: visible;
+  transition: opacity 0.46s ease-out;
 }
+
+/* Photo + wash */
+.nav-overlay-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.nav-overlay-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% bottom;
+  filter: brightness(0.78);
+}
+.nav-overlay-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 30%, rgba(0,0,0,0.6) 100%),
+    linear-gradient(45deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 50%);
+}
+
+/* Brand wordmark — top left */
+.nav-overlay-brand {
+  position: absolute;
+  top: 22px;
+  left: var(--side);
+  z-index: 2;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+
+/* Close X */
 .nav-overlay-close {
   position: absolute;
-  top: 18px;
+  top: 16px;
   right: var(--side);
+  z-index: 2;
   background: transparent;
   border: none;
-  padding: 6px;
+  padding: 8px;
   cursor: pointer;
-  color: var(--text);
+  color: rgba(255,255,255,0.94);
 }
-.nav-overlay-close svg { width: 26px; height: 26px; display: block; }
+.nav-overlay-close svg {
+  width: 26px;
+  height: 26px;
+  display: block;
+  filter: drop-shadow(0 1px 6px rgba(0,0,0,0.45));
+}
 
+/* Numbered links */
 .nav-overlay-links {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 38%;
+  transform: translateY(-50%);
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 22px;
+  padding: 0 var(--side);
 }
 .nav-overlay-links a {
-  font-family: var(--font-display);
-  font-size: 2.25rem;
-  font-weight: 300;
-  letter-spacing: 0.01em;
-  color: var(--bg-dark);
-  line-height: 1;
-  position: relative;
-  width: max-content;
-  padding-bottom: 4px;
-}
-.nav-overlay-links a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  transform-origin: left;
-  transform: scaleX(0);
-  transition: transform 0.35s ease-out;
-}
-.nav-overlay-links a:hover::after,
-.nav-overlay-links a:active::after,
-.nav-overlay-links a[aria-current="page"]::after { transform: scaleX(1); }
-.nav-overlay-links a[aria-current="page"] { color: #b8842a; }
-
-.nav-overlay-cta {
-  margin-top: 36px;
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: 28px 32px 1fr;
   align-items: center;
-  gap: 8px;
-  width: max-content;
-  padding: 11px 22px;
-  border: 1px solid var(--bg-dark);
-  font-family: var(--font-body);
-  font-size: 0.86rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--bg-dark);
-  transition: background 0.25s, color 0.25s;
+  gap: 14px;
+  color: rgba(255,255,255,0.96);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 8vw, 2.6rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.45);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.42s ease-out, transform 0.42s ease-out;
 }
-.nav-overlay-cta svg { width: 16px; height: 16px; }
-.nav-overlay-cta:active { background: var(--bg-dark); color: var(--bg); }
+.nav-overlay-links .nv-num {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,0.55);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+  align-self: center;
+  line-height: 1;
+}
+.nav-overlay-links .nv-rule {
+  height: 1px;
+  width: 28px;
+  background: rgba(255,255,255,0.42);
+  transition: width 0.35s ease-out, background 0.25s;
+}
+.nav-overlay-links a:active .nv-rule { width: 40px; }
+.nav-overlay-links a[aria-current="page"] .nv-rule { background: #d9a85a; width: 40px; }
+.nav-overlay-links a[aria-current="page"] { color: #d9a85a; }
+.nav-overlay-links a[aria-current="page"] .nv-num { color: rgba(217,168,90,0.85); }
 
+/* Stagger fade-in */
+.nav-overlay.open .nav-overlay-links a:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.10s; }
+.nav-overlay.open .nav-overlay-links a:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.18s; }
+.nav-overlay.open .nav-overlay-links a:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.26s; }
+.nav-overlay.open .nav-overlay-links a:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.34s; }
+
+/* CTA — text style with gold hairline above */
+.nav-overlay-cta {
+  position: absolute;
+  bottom: 84px;
+  left: var(--side);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #fff;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.42s ease-out, transform 0.42s ease-out;
+}
+.nav-overlay.open .nav-overlay-cta {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.46s;
+}
+.nav-overlay-cta .nv-cta-rule {
+  display: block;
+  height: 1px;
+  width: 56px;
+  background: #d9a85a;
+}
+.nav-overlay-cta .nv-cta-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.96);
+  text-shadow: 0 1px 10px rgba(0,0,0,0.45);
+}
+.nav-overlay-cta .nv-arrow {
+  display: inline-block;
+  margin-left: 8px;
+  transition: transform 0.3s;
+}
+.nav-overlay-cta:active .nv-arrow { transform: translateX(4px); }
+
+/* Meta — bottom left, small caps */
 .nav-overlay-meta {
-  margin: 28px 0 0;
+  position: absolute;
+  bottom: 28px;
+  left: var(--side);
+  z-index: 2;
+  margin: 0;
   font-family: var(--font-body);
   font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(255,255,255,0.82);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.55);
+  opacity: 0;
+  transition: opacity 0.42s ease-out;
 }
+.nav-overlay.open .nav-overlay-meta {
+  opacity: 1;
+  transition-delay: 0.56s;
+}
+
+/* Hide old SVG icon inside CTA if any leftover markup exists */
+.nav-overlay-cta svg { display: none; }
 
 /* OVER-HERO VARIANT — when the nav sits above the hero photo (toggled
    by script.js based on scrollY < hero height), switch every link,
