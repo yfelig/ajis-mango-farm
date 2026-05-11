@@ -1682,7 +1682,10 @@ cite {
 }
 .text-link:hover { gap: 14px; }
 
-/* HOST QUOTE */
+/* HOST QUOTE — pull-quote opening a content section. Hairline TOP rule
+   (not left border) so the quote sits at the same x as the surrounding
+   kicker, H2, fact-line, paragraphs and CTAs. Keeps the section
+   symmetric and the editorial pull-quote feel via italic display type. */
 .host-quote {
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 1.9vw, 1.75rem);
@@ -1692,8 +1695,19 @@ cite {
   color: var(--text);
   margin-top: 24px;
   max-width: none;
-  border-left: 3px solid var(--bg-dark);
-  padding-left: 20px;
+  position: relative;
+  padding-top: 22px;
+}
+.host-quote::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 1px;
+  background: var(--bg-dark);
+  opacity: 0.55;
 }
 
 /* .host-quote--lg removed — site-wide pull-quote uniformity */
