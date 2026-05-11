@@ -246,11 +246,7 @@ p + p { margin-top: 16px; }
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  /* Gold arrow — same gold as the site's .fact-line accent. One small
-     color hit at the action point, drawing the eye to the CTA without
-     filling the pill. Inherits site-wide palette, not a new color. */
-  color: #b8842a;
-  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.2s;
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 /* Hover: subtle sage tint instead of a full forest fill. Echoes the
    mobile sage-glass nav and stays inside the brand greens — no jarring
