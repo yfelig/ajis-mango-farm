@@ -19,6 +19,7 @@
   <meta name="twitter:image" content="https://aji-fruit-farm.lk/photos/farm-wide.jpg" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥭</text></svg>" />
   <link rel="stylesheet" href="style.css?v=34" />
+  <link rel="preload" as="image" href="photos/farm-mangos.webp" type="image/webp" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -54,7 +55,7 @@
 <body class="subpage">
 
   <!-- NAV -->
-  <header class="nav scrolled over-hero">
+  <header class="nav scrolled">
     <a href="index.html" class="nav-logo">Aji Fruit Farm</a>
     <nav class="nav-links">
       <a href="story.html">Our Story</a>
@@ -70,6 +71,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </header>
+  <script>if(matchMedia('(max-width:860px)').matches)document.currentScript.previousElementSibling.classList.add('over-hero');</script>
 
   <!-- MOBILE FULL-SCREEN MENU -->
   <div class="nav-overlay" id="nav-overlay" aria-hidden="true" hidden>
