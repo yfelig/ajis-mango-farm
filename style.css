@@ -116,10 +116,10 @@ p + p { margin-top: 16px; }
      Pure transparency too only when `.over-hero` is set (added by
      script.js while scrollY < hero).
      Hidden on scroll-down, revealed on scroll-up. */
-  background: var(--bg-dark);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(240, 237, 228, 0.42);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(27, 56, 38, 0.06);
   transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
               opacity   0.45s ease,
               background 1.4s ease,
@@ -161,12 +161,15 @@ p + p { margin-top: 16px; }
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  /* Base state: white on forest. Logo anchors the bar in pure white. */
-  color: #fff;
-  /* Soft dark halo lifts the lettering on the forest fill without
-     creating a hard edge. Heavier shadow kicks in via .over-hero
-     when the nav rides over a photo. */
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  /* Logo stays pure ink — anchors the bar; nav links sit in forest. */
+  color: var(--text);
+  /* Two-layer shadow: white lift gives the lettering body on light
+     glass backgrounds (cream desktop, sage mobile); a soft dark
+     halo carries legibility when the nav rides over a varying photo
+     during scroll (especially mobile mid-section transitions). */
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.4),
+    0 1px 4px rgba(0, 0, 0, 0.12);
   transition: color 1.0s ease, text-shadow 1.0s ease, font-size 1.4s ease;
 }
 /* Soft warm halo when the logo is pressed — fades in/out smoothly with
@@ -190,8 +193,8 @@ p + p { margin-top: 16px; }
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  color: var(--bg-dark);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.35);
   transition: color 1.4s ease, text-shadow 1.4s ease, font-size 1.4s ease;
 }
 /* Hover affordance: hairline slides in from the left under the link
@@ -227,24 +230,22 @@ p + p { margin-top: 16px; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: transparent;
+  /* Filled forest pill with white text — strong, focused CTA against
+     the cream-glass / transparent nav. The pill is the only element
+     that carries brand-fill color; the rest of the bar stays light. */
+  background: var(--bg-dark);
   color: #fff;
-  /* Same size/weight/color as .nav-links a, but Title Case (Vivre
-     "Let's Talk" style) so the CTA stays part of the bar's family
-     while signaling its action. Tighter letter-spacing because mixed
-     case doesn't need wide tracking. */
   font-size: 1.1rem;
   font-weight: 400;
   letter-spacing: 0.01em;
   text-transform: none;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  text-shadow: none;
   padding: 5px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--bg-dark);
   border-radius: 8px;
   /* Soft drop-shadow gives the pill a sense of body / anchor — sits
-     ON the bar instead of being painted into it. Dark tint keeps the
-     glow grounded against the forest fill. */
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+     ON the bar instead of being painted into it. */
+  box-shadow: 0 2px 12px rgba(27, 56, 38, 0.28);
   /* Split timings: hover-driven props (background, shadow, transform)
      stay snappy at ~0.25s. State-driven props (color, text-shadow,
      border-color — change when the nav crosses .over-hero) take
@@ -323,7 +324,7 @@ p + p { margin-top: 16px; }
   padding: 6px;
   margin-left: 4px;
   cursor: pointer;
-  color: #fff;
+  color: var(--text);
   transition: color 0.2s;
 }
 .nav-burger svg { width: 26px; height: 26px; display: block; }
@@ -542,8 +543,8 @@ p + p { margin-top: 16px; }
    foliage. Strong dark text-shadow gives a subtle halo that works on
    bright AND dark patches of the photo. */
 /* Over-hero: logo + nav links stay light (white text + dark halo)
-   so they read on the photo. Only .nav-wa (the CTA pill) flips to
-   white-filled. */
+   so they read on the photo. The CTA pill stays filled forest in
+   both states — it carries its own contrast against any background. */
 .nav.over-hero .nav-logo,
 .nav.over-hero .nav-links a {
   color: #fff;
@@ -551,24 +552,8 @@ p + p { margin-top: 16px; }
                0 0 3px rgba(0, 0, 0, 0.55),
                0 1px 2px rgba(0, 0, 0, 0.4);
 }
-.nav.over-hero .nav-wa {
-  color: #fff;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75),
-               0 0 3px rgba(0, 0, 0, 0.55),
-               0 1px 2px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.85);
-}
 .nav.over-hero .nav-links a:hover { color: #fff; }
 .nav.over-hero .nav-links a::after { background: #fff; }
-.nav.over-hero .nav-wa:hover {
-  /* Same white fill / forest-dark text as default hover — consistent
-     pill character across both states. */
-  background: #fff;
-  color: var(--bg-dark);
-  text-shadow: none;
-  border-color: #fff;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.28);
-}
 
 /* HERO */
 .hero {
@@ -2118,10 +2103,11 @@ footer {
   .nav-wa { display: none; }
   .nav-burger { display: inline-flex; }
 
-  /* Mobile-only: forest-dark fill matches desktop's scrolled state. */
+  /* Mobile-only: sage-tinted glass so the bar reads clearly over
+     photos on a phone. Desktop keeps the cream-glass default. */
   .nav:not(.over-hero) {
-    background: var(--bg-dark);
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    background: rgba(168, 188, 162, 0.55);
+    border-bottom-color: rgba(27, 56, 38, 0.14);
   }
 
   /* Splits stack — let content drive height. The 100svh viewport rule
